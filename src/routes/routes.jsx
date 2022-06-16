@@ -8,7 +8,8 @@ import {Login} from "../pages/login/login";
 export const authRoutes = [
     {
         path: LOGIN_ROUTE,
-        component: <Login/>
+        component: <Login/>,
+        permissions: []
     }
 ]
 

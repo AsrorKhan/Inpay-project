@@ -4,7 +4,6 @@ import AppRoutes from "../../routes/AppRoutes";
 export const ContentComponent = () => {
     return (
         <>
-            <h2>ContentComponent</h2>
             <AppRoutes/>
         </>
     );

@@ -6,18 +6,18 @@ import {LOGIN_ROUTE} from "../constants/routeContants";
 
 function AppRoutes() {
     const user = useSelector(state => state.user)
-    console.log(user);
     return (
         <Routes>
             {user.isAuth &&
                 authRoutes.map((route) => (
-                    <Route key={route.path} component={route.component}/>
+                    <Route key={route.path} path={route.path} element={route.component} />
                 ))}
-            {!user.isAuth && publicRoutes.map((route) => (
-                <Route key={route.path} component={route.component}/>
-            ))}
+            {user.isAuth &&
+                publicRoutes.map((route) => (
+                    <Route key={route.path} path={route.path} element={route.component} />
+                ))}
             {!user.isAuth && (
-                <Route path="*" element={<Navigate to={`/${LOGIN_ROUTE}`}/>}/>
+                <Route path="*" element={<Navigate to={`/${LOGIN_ROUTE}`} />} />
             )}
         </Routes>
     )
