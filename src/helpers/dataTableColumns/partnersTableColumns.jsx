@@ -1,4 +1,4 @@
-export const PartnersTableColumns = [
+export const partnersTableColumns = [
     {
         title: 'партнеры',
         dataIndex: 'partners',
@@ -12,7 +12,8 @@ export const PartnersTableColumns = [
     {
         title: 'Статус',
         dataIndex: 'status',
-        key: ''
+        key: '',
+        render: (text, record) => console.log(record)
     },
     {
         title: 'Забыли пароль',

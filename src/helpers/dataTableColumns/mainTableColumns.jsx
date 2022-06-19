@@ -1,32 +1,35 @@
-export const mainPageDataColumn = [
+import {RowStatus} from "../../components/rowStatus/rowStatus";
+
+export const homePageDataColumn = [
     {
-        label: 'Название тор.точки',
+        title: 'Название тор.точки',
         dataIndex: 'merchantName',
         key: 'merchantName'
     },
     {
-        label: 'Дата сделки',
+        title: 'Дата сделки',
         dataIndex: 'dealDate',
         key: 'dealDate'
     },
     {
-        label: 'Стоимость  поставщика',
+        title: 'Стоимость  поставщика',
         dataIndex: 'supplierCost',
         key: 'supplierCost'
     },
     {
-        label: 'B рассрочку ',
+        title: 'B рассрочку ',
         dataIndex: 'forInstallments',
         key: 'forInstallments'
     },
     {
-        label: '% наценки',
+        title: '% наценки',
         dataIndex: 'markup',
         key: 'markup'
     },
     {
-        label: 'Статус',
+        title: 'Статус',
         dataIndex: 'status',
-        key: ''
+        key: '',
+        render: (text, record)=> <RowStatus successText={'Успещно'} failedText={'Не успешно'} status={text}/>
     },
 ]

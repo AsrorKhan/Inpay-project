@@ -1,0 +1,21 @@
+
+
+.row-status__success,
+.row-status__failed{
+  padding: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 4px 8px;
+  width: 100px;
+  text-align: center;
+}
+
+.row-status__failed {
+  color: #fff;
+  background-color: #AA0505;
+}
+
+.row-status__success {
+  color: #00965A;
+  background-color: #D2FAEA;
+}
