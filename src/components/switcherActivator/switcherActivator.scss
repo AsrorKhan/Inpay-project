@@ -1,0 +1,17 @@
+.status-activator-switcher {
+  .active-status,
+  .inactive-status {
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    letter-spacing: 0.1px;
+  }
+  .active-status {
+    background-color: #D2FAEA;
+    color: #00965A;
+  }
+  .inactive-status {
+    background-color: #FAD2D2;
+    color: #960000;
+  }
+}

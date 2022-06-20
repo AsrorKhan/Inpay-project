@@ -1,3 +1,5 @@
+import {SwitcherActivator} from "../../components/switcherActivator/switcherActivator";
+
 export const partnersTableColumns = [
     {
         title: 'партнеры',
@@ -13,11 +15,12 @@ export const partnersTableColumns = [
         title: 'Статус',
         dataIndex: 'status',
         key: '',
-        render: (text, record) => console.log(record)
+        render: (text, record) => <SwitcherActivator status={text}/>
     },
     {
         title: 'Забыли пароль',
         dataIndex: 'restorePassword',
-        key: 'restorePassword'
+        key: 'restorePassword',
+        render: (text, record) => console.log(text)
     },
 ]

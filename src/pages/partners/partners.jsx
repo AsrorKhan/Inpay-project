@@ -7,7 +7,6 @@ import {Icon} from "../../components/icon/icon";
 import iconCalendar from "../../assets/icons/icon-calendar.png";
 import {Option} from "antd/es/mentions";
 import {AddPartner} from "../../components/addPartner/addPartner";
-
 export const Partners = () => {
     const [viewCountTable, setViewCountTable] = useState(10)
 
@@ -49,8 +48,8 @@ export const Partners = () => {
                             <div className='ant-table__pick-size-table'>Показать: &nbsp;
                                 <Select defaultValue="10" onChange={changeViewCountTable}>
                                     <Option value={10}>10</Option>
-                                    <Option value={15}>15</Option>
                                     <Option value={20}>20</Option>
+                                    <Option value={30}>30</Option>
                                 </Select></div>
                             <div className='ant-table__amounts'>
                                 <span className='ant-table__amounts-title'>Итого цена поставщика</span>

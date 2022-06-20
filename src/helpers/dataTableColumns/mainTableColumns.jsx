@@ -30,6 +30,6 @@ export const homePageDataColumn = [
         title: 'Статус',
         dataIndex: 'status',
         key: '',
-        render: (text, record)=> <RowStatus successText={'Успещно'} failedText={'Не успешно'} status={text}/>
+        render: (text, record)=> <RowStatus successText={'Успешно'} failedText={'Не успешно'} status={text}/>
     },
 ]

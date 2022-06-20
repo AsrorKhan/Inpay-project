@@ -1,0 +1,122 @@
+@import "src/styles/constants";
+
+
+.add-partner-form {
+  &__upload-photo-text {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+
+  }
+  &__upload-photo-text__title {
+    color: #44444F;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: bold;
+    letter-spacing: .1px;
+  }
+  &__upload-photo-text__desc {
+    margin-top: 10px;
+    color: #B5B5BE;
+    font-size: 12px;
+  }
+
+  &__upload-photo {
+    .ant-form-item-control-input-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      .ant-upload-picture-card-wrapper {
+        width: 40%;
+      }
+    }
+  }
+
+
+
+  &__title-security {
+    span {
+      font-size: 20px;
+      color: var(--main-text-color);
+      font-weight: bold;
+    }
+    hr {
+      background-color: #92929D;
+    }
+  }
+  &__partner-data-submit {
+    button {
+      width: 100%;
+      border-radius: 6px;
+      align-self: end;
+    }
+  }
+  &__partner-name,
+  &__partner-phone-number,
+  &__partner-login {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--main-text-color);
+    input {
+      border-radius: 10px;
+      border-color: #E2E2EA;
+      padding: 10px 12px;
+    }
+  }
+
+
+
+
+
+}
+
+.add-partner {
+  &__drawer {
+    display: flex;
+    flex-direction: column;
+    .ant-drawer-body {
+      padding: 20px;
+    }
+    .ant-drawer-header {
+      background: url("/assets/add-partner-header-bg.png");
+      background-size: contain;
+      height: 182px;
+      display: flex;
+      align-items: start;
+      .ant-drawer-close {
+        padding: 11px 12px;
+        background-color: #ffffff;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &__add-button {
+    padding: 12px;
+    background-color: #0062FF;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #ffffff;
+    letter-spacing: .1px;
+    border-radius: 6px !important;
+    img {
+      margin-right: 5px;
+    }
+  }
+  &__title {
+    font-size: 20px;
+    color: var(--main-text-color);
+    font-weight: bold;
+  }
+  &__upload-photo {
+    display: flex;
+  }
+
+
+
+  &__form-data {
+
+  }
+
+}
