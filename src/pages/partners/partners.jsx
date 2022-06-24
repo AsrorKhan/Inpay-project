@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {Col, DatePicker, PageHeader, Row, Select, Table} from "antd";
-import PageTitle from "../../components/pageTitle/pageTitle";
 import {partnersTableColumns} from "../../helpers/dataTableColumns/partnersTableColumns";
 import {partnersTableMockData} from "../../helpers/mockData/partnersTableMockData";
 import {Icon} from "../../components/icon/icon";
 import iconCalendar from "../../assets/icons/icon-calendar.png";
 import {Option} from "antd/es/mentions";
 import {AddPartner} from "../../components/addPartner/addPartner";
+
 export const Partners = () => {
     const [viewCountTable, setViewCountTable] = useState(10)
 
@@ -31,7 +31,11 @@ export const Partners = () => {
                     columns={partnersTableColumns}
                     dataSource={partnersTableMockData}
                     rowKey={(r) => r.key}
-
+                    onRow={(record, rowIndex) => {
+                        return {
+                            onClick: event => alert('clicked')
+                        }
+                    }}
                     title={() => (
                         <>
                             <DatePicker suffixIcon={<Icon content={iconCalendar}/>} placeholder={'Дата с'}

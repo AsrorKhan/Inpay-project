@@ -1,4 +1,5 @@
 import {SwitcherActivator} from "../../components/switcherActivator/switcherActivator";
+import {RecoverPassword} from "../../components/recoverPassword/recoverPassword";
 
 export const partnersTableColumns = [
     {
@@ -21,6 +22,6 @@ export const partnersTableColumns = [
         title: 'Забыли пароль',
         dataIndex: 'restorePassword',
         key: 'restorePassword',
-        render: (text, record) => console.log(text)
+        render: (text, record) => <RecoverPassword />
     },
 ]
