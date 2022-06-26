@@ -6,9 +6,13 @@ import {Icon} from "../../components/icon/icon";
 import iconCalendar from "../../assets/icons/icon-calendar.png";
 import {Option} from "antd/es/mentions";
 import {AddPartner} from "../../components/addPartner/addPartner";
+import {MoreInformation} from "../../components/moreInformation/moreInformation";
+import {ChangePartner} from "../../components/changePartner/changePartner";
 
 export const Partners = () => {
     const [viewCountTable, setViewCountTable] = useState(10)
+    const [changeInformation, setChangeInformation] = useState(false)
+
 
     const onChange = (date, dateString) => {
         console.log(date, dateString);
@@ -16,6 +20,10 @@ export const Partners = () => {
     const changeViewCountTable = (value) => {
         setViewCountTable(value)
     }
+    const onCloseChangePartners = () => {
+        setChangeInformation(false);
+    }
+
     return (
         <Row justify={"center"} className='home-component'>
             <Col span={18}>
@@ -27,13 +35,19 @@ export const Partners = () => {
                 />
             </Col>
             <Col span={18} style={{padding: 12, backgroundColor: '#fff', borderRadius: 10}}>
+                <ChangePartner
+                    visible={changeInformation}
+                    onClose={onCloseChangePartners}
+                />
                 <Table
                     columns={partnersTableColumns}
                     dataSource={partnersTableMockData}
-                    rowKey={(r) => r.key}
+                    rowKey={(r) => r.id}
                     onRow={(record, rowIndex) => {
                         return {
-                            onClick: event => alert('clicked')
+                            onClick: event => {
+                                setChangeInformation(true)
+                            }
                         }
                     }}
                     title={() => (

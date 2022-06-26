@@ -7,15 +7,19 @@ import {Option} from "antd/es/mentions";
 import {Icon} from "../../components/icon/icon";
 import iconCalendar from '../../assets/icons/icon-calendar.png'
 import {AddPartner} from "../../components/addPartner/addPartner";
+import {MoreInformation} from "../../components/moreInformation/moreInformation";
 
 export const Home = () => {
-    const [viewCountTable, setViewCountTable] = useState(10)
+    const [viewCountTable, setViewCountTable] = useState(10);
+    const [rowMoreInformation, setRowMoreInformation] = useState({})
+    const [visibleMoreInformation, setVisibleMoreInformation] = useState(false)
 
+    const onCloseMoreInformation = () => {
+        setVisibleMoreInformation(false);
+    };
     const onChange = (date, dateString) => {
         console.log(date, dateString);
     };
-
-
     const changeViewCountTable = (value) => {
         setViewCountTable(value)
     }
@@ -27,11 +31,23 @@ export const Home = () => {
 
 
             <Col span={18} style={{padding: 12, backgroundColor: '#fff', borderRadius: 10}}>
+                <MoreInformation
+                    onClose={onCloseMoreInformation}
+                    moreInformation={rowMoreInformation}
+                    visible={visibleMoreInformation}
+                />
                 <Table
                     columns={homePageDataColumn}
                     dataSource={homeTableMockData}
                     rowKey={(r) => r.key}
-
+                    onRow={(record, rowIndex) => {
+                        return {
+                            onClick: event => {
+                                setVisibleMoreInformation(true)
+                                setRowMoreInformation(record)
+                            }
+                        }
+                    }}
                     title={() => (
                         <>
                             <DatePicker suffixIcon={<Icon content={iconCalendar}/>} placeholder={'Дата с'}
