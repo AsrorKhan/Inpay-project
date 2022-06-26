@@ -1,0 +1,57 @@
+.change-partner-component {
+  .ant-drawer-header {
+    height: 182px;
+    background: url("../../assets/bg-change-partner-header.png") no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: flex-start;
+    z-index: 2;
+
+    .ant-drawer-header-title {
+      button {
+        padding: 8px 10px;
+        background-color: #ffffff;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &__header-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+    margin-bottom: 15px;
+
+    &-merchant-logo {
+      width: 77px;
+      height: 77px;
+      border-radius: 10px;
+      background: url("../../assets/more-information-header-logo.png") no-repeat center center;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+
+    &__title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--main-text-color);
+      margin: 0;
+    }
+
+    &__form-actions {
+      display: flex;
+      justify-content: space-between;
+
+      button {
+
+      }
+    }
+  }
+
+}

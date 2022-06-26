@@ -1,0 +1,67 @@
+.more-information-list {
+  .ant-drawer-header {
+    height: 182px;
+    background: url("../../assets/bg-more-information-partners.png") no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: flex-start;
+    z-index: 2;
+    .ant-drawer-header-title {
+      button {
+        padding: 8px 10px;
+        background-color: #ffffff;
+        border-radius: 50%;
+      }
+    }
+
+  }
+  &__header-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+    &-merchant-logo {
+      width: 77px;
+      height: 77px;
+      border-radius: 10px;
+      background: url("../../assets/more-information-header-logo.png") no-repeat center center;
+    }
+  }
+  &__title {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    padding: 0 32px;
+    line-height: 20px;
+    margin: 5px 0 40px;
+    color: var(--main-text-color);
+    font-weight: bold;
+  }
+  .ant-drawer-body {
+    padding: 10px;
+    position: relative;
+    .more-information-list__header-logo {
+      text-align: center;
+      width: 100%;
+    }
+  }
+  .ant-list-item {
+    padding: 16px 7px !important;
+  }
+  &__list-item {
+    strong {
+      color: #696974;
+    }
+    span {
+      font-weight: bold;
+      color: #44444F;
+    }
+
+    &-status {
+      &__success,
+      &__fails {
+
+      }
+    }
+  }
+}
