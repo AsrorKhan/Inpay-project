@@ -10,14 +10,14 @@ function AppRoutes() {
         <Routes>
             {user.isAuth &&
                 authRoutes.map((route) => (
-                    <Route key={route.path} path={route.path} element={route.component} />
+                    <Route key={route.path} path={route.path} element={route.component}/>
                 ))}
-            {user.isAuth &&
+            {!user.isAuth &&
                 publicRoutes.map((route) => (
-                    <Route key={route.path} path={route.path} element={route.component} />
+                    <Route key={route.path} path={route.path} element={route.component}/>
                 ))}
             {!user.isAuth && (
-                <Route path="*" element={<Navigate to={`/${LOGIN_ROUTE}`} />} />
+                <Route path="*" element={<Navigate to={`/${LOGIN_ROUTE}`}/>}/>
             )}
         </Routes>
     )

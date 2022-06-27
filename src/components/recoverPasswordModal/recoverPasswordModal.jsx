@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {Button, Modal} from "antd";
 import {Icon} from "../icon/icon";
 import {iconsList} from "../../helpers/iconsList";
-import './recoverPassword.scss'
+import './recoverPasswordModal.scss'
 import {CheckOutlined} from "@ant-design/icons";
 
-export const RecoverPassword = () => {
+export const RecoverPasswordModal = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const showModal = (e) => {

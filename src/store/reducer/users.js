@@ -7,7 +7,7 @@ const userSlice = createSlice({
         refresh_token: '',
         scope: [],
         token_type: '',
-        isAuth: true,
+        isAuth: false,
     },
     reducers: {
         setUser(state, action) {
