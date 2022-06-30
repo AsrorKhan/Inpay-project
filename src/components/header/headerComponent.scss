@@ -17,28 +17,37 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      .ant-avatar {
-        margin-right: 10px;
-      }
 
-      img {
-        border-radius: 50px;
-      }
-      .ant-select-selection-item{
+      &__avatar-wrapper {
         display: flex;
         align-items: center;
+        &:after {
+          content: '';
+          background: url("../../assets/icons/icon-caret-down.svg") no-repeat center center;
+          width: 10px;
+          height: 10px;
+
+          margin-left: 10px;
+
+        }
+        &__dropdown-elements {
+          display: flex;
+          align-items: center;
+        }
       }
-      .user__user-data {
-        padding: 0;
-        margin: 0;
+
+      &__user-data {
+        margin-left: 10px !important;
         list-style: none;
         line-height: 14px;
         text-align: left;
-        .user__username{
+
+        &__username {
           font-weight: bold;
           color: var(--main-text-color);
         }
-        .user__user-role {
+
+        &__user-role {
           font-size: 12px;
           color: #92929D;
         }
@@ -57,6 +66,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     a {
       color: var(--main-text-color);
       font-weight: bold;
@@ -64,8 +74,10 @@
       letter-spacing: .2px;
       position: relative;
     }
+
     .active-link {
       position: relative;
+
       &::before {
         content: '';
         width: 100%;

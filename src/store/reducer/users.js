@@ -24,6 +24,8 @@ const userSlice = createSlice({
             state.token_type = '';
             state.isAuth = false;
         },
+
+
     },
 });
 

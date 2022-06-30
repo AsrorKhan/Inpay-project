@@ -4,15 +4,21 @@ import {Icon} from "../icon/icon";
 import {iconsList} from "../../helpers/iconsList";
 import './recoverPasswordModal.scss'
 import {CheckOutlined} from "@ant-design/icons";
+import {useNavigate} from "react-router-dom";
+import {RECOVER_PASSWORD_MAIN_ROUTE} from "../../constants/routeContants";
 
 export const RecoverPasswordModal = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-
+    const navigate = useNavigate();
     const showModal = (e) => {
         setIsModalVisible(true);
         e.stopPropagation()
     };
 
+    const recoverPasswordFunctional = (event) => {
+        event.stopPropagation()
+        navigate(`/${RECOVER_PASSWORD_MAIN_ROUTE}`)
+    }
     const handleOk = (e) => {
         setIsModalVisible(false);
         e.stopPropagation()
@@ -40,10 +46,10 @@ export const RecoverPasswordModal = () => {
                     запрос на восстановление пароля
                 </div>
                 <div className="recover-password__recover-modal__btns">
-                    <Button type={"primary"} danger className='recover-password__recover-modal__btns__cancel'>
+                    <Button type={"primary"} danger className='recover-password__recover-modal__btns__cancel' onClick={event => event.stopPropagation()}>
                         Отмена
                     </Button>
-                    <Button type={"primary"} className='recover-password__recover-modal__btns__send'>
+                    <Button type={"primary"} className='recover-password__recover-modal__btns__send' onClick={recoverPasswordFunctional}>
                         <CheckOutlined/> &nbsp;
                         Отправить
                     </Button>
@@ -51,7 +57,7 @@ export const RecoverPasswordModal = () => {
             </Modal>
 
 
-            <Button type="primary" ghost className='recover-password__button' onClick={showModal}>
+            <Button type="primary" ghost className='recover-password__button' onClick={showModal} >
                 <Icon content={iconsList.iconLock} alt={'icon-lock'}/>
                 Сменить пароль
             </Button>

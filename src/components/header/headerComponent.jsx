@@ -5,16 +5,29 @@ import {Header} from "antd/es/layout/layout";
 import {Icon} from "../icon/icon";
 import './headerComponent.scss';
 import mainLogo from '../../assets/main-logo.svg';
-import notificationLogo from '../../assets/icons/icon_notification.svg'
-import avatar from '../../assets/avatar.png'
-import {Avatar, Badge, Select} from "antd";
-
+import notificationLogo from '../../assets/icons/icon_notification.svg';
+import avatar from '../../assets/avatar.png';
+import {Avatar, Badge, Button, Dropdown, Menu, Select, Typography} from "antd";
+import authService from "../../services/authService";
+import {UserOutlined} from '@ant-design/icons';
 const {Option} = Select;
 const HeaderComponent = () => {
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };
-
+    const menu = (
+        <Menu>
+            <Menu.Item
+                key="1"
+                icon={<UserOutlined />}
+                onClick={() => {
+                    authService.logOut();
+                }}
+            >
+                Выйти
+            </Menu.Item>
+        </Menu>
+    );
 
     return (
         <Header className='header-component' style={{background: '#fff'}}>
@@ -42,23 +55,17 @@ const HeaderComponent = () => {
                     <Avatar shape="square" size="small" src={notificationLogo}/>
                 </Badge>
                 <div className="user">
-                    <Avatar shape={"circle"} src={avatar}/>&nbsp;
-                    <Select
-                        bordered={false}
-                        // mode={"multiple"}
-                        defaultValue="lucy"
-                        size={"large"}
-                        onChange={handleChange}
-                    >
-                        <Option value="lucy">
-                            <ul className='user__user-data' style={{padding: 0, margin: 0, listStyle: "none"}}>
-                                <li className='user__username'>Abdullayev Alisher</li>
-                                <li className='user__user-role'>Super admin</li>
-                            </ul>
-                        </Option>
-                        <Option value="exit"> Sign out</Option>
-
-                    </Select>
+                    <div className="user__avatar-wrapper">
+                        <Dropdown overlay={menu} >
+                            <span className='user__avatar-wrapper__dropdown-elements'>
+                                <Avatar size={44} src={<img src={avatar} alt="avatar" />} />
+                                <ul className='user__user-data' style={{padding: 0, margin: 0, listStyle: "none"}}>
+                                    <li className='user__user-data__username'>Abdullayev Alisher</li>
+                                    <li className='user__user-data__user-role'>Super admin</li>
+                                </ul>
+                            </span>
+                        </Dropdown>
+                    </div>
                 </div>
             </div>
         </Header>
