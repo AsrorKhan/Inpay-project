@@ -1,68 +1,75 @@
 @import "src/styles/constants";
 
 
-.add-partner-form {
-  &__upload-photo-text {
-    width: 60%;
+.add-partner {
+
+  &__form {
+    height: 100%;
     display: flex;
     flex-direction: column;
-
-  }
-  &__upload-photo-text__title {
-    color: #44444F;
-    font-size: 18px;
-    line-height: 20px;
-    font-weight: bold;
-    letter-spacing: .1px;
-  }
-  &__upload-photo-text__desc {
-    margin-top: 10px;
-    color: #B5B5BE;
-    font-size: 12px;
-  }
-
-  &__upload-photo {
-    .ant-form-item-control-input-content {
+    justify-content: space-between;
+    &__upload-photo-text {
+      width: 60%;
       display: flex;
-      align-items: center;
-      width: 100%;
-      .ant-upload-picture-card-wrapper {
-        width: 40%;
+      flex-direction: column;
+
+    }
+    &__upload-photo-text__title {
+      color: #44444F;
+      font-size: 18px;
+      line-height: 20px;
+      font-weight: bold;
+      letter-spacing: .1px;
+    }
+    &__upload-photo-text__desc {
+      margin-top: 10px;
+      color: #B5B5BE;
+      font-size: 12px;
+    }
+
+    &__upload-photo {
+      .ant-form-item-control-input-content {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        .ant-upload-picture-card-wrapper {
+          width: 40%;
+        }
+      }
+    }
+
+    &__title-security {
+      span {
+        font-size: 20px;
+        color: var(--main-text-color);
+        font-weight: bold;
+      }
+      hr {
+        background-color: #92929D;
+      }
+    }
+    &__partner-data-submit {
+      button {
+        width: 100%;
+        border-radius: 6px;
+        align-self: end;
+      }
+    }
+    &__partner-name,
+    &__partner-phone-number,
+    &__partner-login {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--main-text-color);
+      input {
+        border-radius: 10px;
+        border-color: #E2E2EA;
+        padding: 10px 12px;
+        width: 100%;
       }
     }
   }
 
-
-
-  &__title-security {
-    span {
-      font-size: 20px;
-      color: var(--main-text-color);
-      font-weight: bold;
-    }
-    hr {
-      background-color: #92929D;
-    }
-  }
-  &__partner-data-submit {
-    button {
-      width: 100%;
-      border-radius: 6px;
-      align-self: end;
-    }
-  }
-  &__partner-name,
-  &__partner-phone-number,
-  &__partner-login {
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--main-text-color);
-    input {
-      border-radius: 10px;
-      border-color: #E2E2EA;
-      padding: 10px 12px;
-    }
-  }
 
 
 
@@ -71,6 +78,10 @@
 }
 
 .add-partner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   &__drawer {
     display: flex;
     flex-direction: column;
