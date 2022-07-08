@@ -12,6 +12,8 @@ class AccountService {
     recoverPassword(newPasswordData) {
         return $instance.post('api/account/reset-password/finish', newPasswordData)
     }
+
+
 }
 
 

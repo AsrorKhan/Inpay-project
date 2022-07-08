@@ -16,16 +16,29 @@ $instance.interceptors.request.use((config) => {
     const login_auth_token = localStorage.getItem('auth_token');
     const token_expires_in = localStorage.getItem('token_expires_in');
     const endDate = new Date(`${token_expires_in}`).getTime();
-    console.log("token_expires_in", token_expires_in);
+
     if (endDate * 1000 < Date.now()) {
         authService.logOut();
     }
     if (login_auth_token) {
         config.headers.Authorization = `Bearer ${login_auth_token}`
     }
-
-
-
-
     return config
 })
+
+$instance.interceptors.response.use(
+    (res) => {
+        return res;
+    },
+    async (err) => {
+        const originalConfig = err.config;
+
+        if (originalConfig.url !== '/auth/login' && err.response) {
+            if (err.response.status === 401) {
+                authService.logout();
+            }
+        }
+
+        return Promise.reject(err);
+    }
+);

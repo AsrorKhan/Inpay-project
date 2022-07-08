@@ -29,7 +29,6 @@ export const ConfirmCode = () => {
             console.log(e);
         }
     }
-    console.log("verificationCode", verificationCode);
 
     return (
         <div className='recover-password-component'>

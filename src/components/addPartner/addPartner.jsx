@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {Button, Drawer, Form, message, Upload} from "antd";
+import React, {useRef, useState} from 'react';
+import {Button, Drawer, Form, message} from "antd";
 import {Icon} from "../icon/icon";
-import {CheckOutlined, LoadingOutlined, PlusOutlined} from '@ant-design/icons';
+import {CheckOutlined, PlusOutlined} from '@ant-design/icons';
 import iconPlus from '../../assets/icons/icon-plus.svg'
 import './addPartner.scss';
 import {TextField} from "@mui/material";
@@ -12,62 +12,47 @@ import userService from "../../services/userService";
 export const AddPartner = () => {
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
+
     const [imageUrl, setImageUrl] = useState();
     const [partnerName, setPartnerName] = useState('');
     const [partnerPhoneNumber, setPartnerPhoneNumber] = useState('');
     const [disableSendButton, setDisableSendButton] = useState(true)
+    const [userLogo, setUserLogo] = useState({})
+    const filePicker = useRef(null)
     const onClose = () => {
         setVisible(false);
     };
     const showDrawer = () => {
         setVisible(true);
     };
+    const handlePick = () => {
+        filePicker.current.click()
+    }
 
-    const handleChange = (info) => {
-        if (info.file.status === 'uploading') {
-            setLoading(true);
-            return;
+    const handleChangeUpload = (event) => {
+        try {
+            let value = event.target.files[0];
+            console.log(value);
+            setUserLogo(value)
+        } catch (e) {
+            console.log(e);
         }
     }
 
-    const uploadButton = (
-        <div>
-            {loading ? <LoadingOutlined/> : <PlusOutlined/>}
-            <div
-                style={{
-                    marginTop: 8,
-                }}
-            >
-            </div>
-        </div>
-    );
-    const getBase64 = (img, callback) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
-    };
-
-    const beforeUpload = (file) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        console.log(file);
-        if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
+    const handleUploadLogo = async () => {
+        if (!userLogo) {
+            message.error('Пожалуйста устоновите логотип')
+            return;
         }
-
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
-        }
-
-        return isJpgOrPng && isLt2M;
-    };
-
+        let formData = new FormData();
+        formData.append('file', userLogo);
+        const response = await userService.uploadUserLogo(formData)
+    }
 
 
     const createNewPartner = async () => {
         const formattedPartnerPhoneNumber = changeFormatPhoneNumber(partnerPhoneNumber)
-
+        await handleUploadLogo();
         try {
             if (partnerName.length > 0) {
                 const newPartnerData = {
@@ -77,6 +62,8 @@ export const AddPartner = () => {
                 const response = await userService.registerNewPartner(newPartnerData);
                 if (response.data.success) {
                     message.success('Партнер создано успешно!!!');
+                }else {
+                    message.error("При создание нового партнера произошло ошибка")
                 }
             }
 
@@ -99,27 +86,23 @@ export const AddPartner = () => {
                 <form className="add-partner__form">
                     <div>
                         <Form.Item className='add-partner__form__upload-photo'>
-                            <Upload
-                                name="avatar"
-                                listType="picture-card"
-                                className="avatar-uploader"
-                                showUploadList={false}
-                                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                beforeUpload={beforeUpload}
-                                onChange={handleChange}
-                            >
-                                {imageUrl ? (
-                                    <img
-                                        src={imageUrl}
-                                        alt="avatar"
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                    />
-                                ) : (
-                                    uploadButton
-                                )}
-                            </Upload>
+                            <div className='add-partner__form__upload-photo__selector-wrapper'>
+                                <button
+                                    className='add-partner__form__upload-photo__selector'
+                                    onClick={handlePick}
+                                    type={"button"}
+                                >
+                                    <PlusOutlined/>
+                                </button>
+                                <input
+                                    type="file"
+                                    className='hidden'
+                                    accept='image/*, .png, .jpg, .gif, .web, .svg'
+                                    onChange={handleChangeUpload}
+                                    ref={filePicker}
+                                />
+                            </div>
+
                             <div className="add-partner-form__upload-photo-text">
                             <span
                                 className='add-partner-form__upload-photo-text__title'>Добавьте логотип партнера</span>
