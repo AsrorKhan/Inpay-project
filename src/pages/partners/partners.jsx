@@ -6,7 +6,6 @@ import {Icon} from "../../components/icon/icon";
 import iconCalendar from "../../assets/icons/icon-calendar.png";
 import {Option} from "antd/es/mentions";
 import {AddPartner} from "../../components/addPartner/addPartner";
-import {MoreInformation} from "../../components/moreInformation/moreInformation";
 import {ChangePartner} from "../../components/changePartner/changePartner";
 import HeaderComponent from "../../components/header/headerComponent";
 

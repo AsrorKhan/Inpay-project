@@ -1,23 +1,24 @@
 import React, {useState} from 'react';
-import {Button, Modal} from "antd";
+import {Button, message, Modal} from "antd";
 import {Icon} from "../icon/icon";
 import {iconsList} from "../../helpers/iconsList";
 import './recoverPasswordModal.scss'
 import {CheckOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
-import {RECOVER_PASSWORD_MAIN_ROUTE} from "../../constants/routeContants";
+import {CONFIRM_PHONE_NUMBER, RECOVER_PASSWORD_MAIN_ROUTE} from "../../constants/routeContants";
 
 export const RecoverPasswordModal = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const navigate = useNavigate();
+
     const showModal = (e) => {
         setIsModalVisible(true);
         e.stopPropagation()
     };
 
-    const recoverPasswordFunctional = (event) => {
+    const recoverPasswordFunctional = async (event) => {
         event.stopPropagation()
-        navigate(`/${RECOVER_PASSWORD_MAIN_ROUTE}`)
+        message.success('Request has been sent')
     }
     const handleOk = (e) => {
         setIsModalVisible(false);
@@ -46,7 +47,7 @@ export const RecoverPasswordModal = () => {
                     запрос на восстановление пароля
                 </div>
                 <div className="recover-password__recover-modal__btns">
-                    <Button type={"primary"} danger className='recover-password__recover-modal__btns__cancel' onClick={event => event.stopPropagation()}>
+                    <Button type={"primary"} danger className='recover-password__recover-modal__btns__cancel' onClick={event => handleCancel()}>
                         Отмена
                     </Button>
                     <Button type={"primary"} className='recover-password__recover-modal__btns__send' onClick={recoverPasswordFunctional}>

@@ -1,0 +1,88 @@
+.recover-password-component {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 50px 0;
+  .recover-password-component__title {
+    color: var(--main-text-color);
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .recover-password-component__desc {
+    width: 320px !important;
+    text-align: center;
+    font-size: 16px;
+    color: var(--main-text-color);
+    display: inline-block;
+    margin-bottom: 40px;
+  }
+
+  &__set-phone-number,
+  &__verification-code,
+  &__confirm-recover-code{
+    display: flex;
+    flex-direction: column;
+    min-width: 560px;
+    height: 334px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    justify-content: space-between;
+    align-items: center;
+    .styles_react-code-input-container__tpiKG {
+      width: 100% !important;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 58px;
+      .styles_react-code-input__CRulA {
+        width: 70% !important;
+        display: flex !important;
+        justify-content: space-around !important;
+        input {
+          border: 1px solid #DDDFE1;
+          border-radius: 10px;
+          &:focus {
+            border: 1px solid #006fff;
+          }
+        }
+      }
+    }
+  }
+  &__confirm-recover-code {
+    justify-content: center;
+    align-items: flex-start;
+    &__send-button {
+      margin-top: 30px;
+    }
+    &__password-checker{
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 10px;
+
+      .password {
+        width: 60px;
+        height: 4px;
+        border-radius: 10px;
+      }
+      .poor {
+        background: red;
+      }
+      .normal {
+        background: #E37610;
+      }
+      .strength {
+        background: #3DEC44;
+      }
+
+    }
+  }
+
+
+
+}
+

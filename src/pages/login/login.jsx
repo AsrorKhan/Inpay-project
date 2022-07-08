@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Form, Input} from 'antd';
+import {Alert, Button, Checkbox, Form, Input, message} from 'antd';
 import './login.scss'
 import {Icon} from "../../components/icon/icon";
 import mainIcon from '../../assets/main-logo.svg'
@@ -7,32 +7,38 @@ import authService from "../../services/authService";
 import {iconsList} from "../../helpers/iconsList";
 import {useDispatch} from "react-redux";
 import {setUser} from "../../store/reducer/users";
-import {useNavigate} from 'react-router-dom'
-import {LOGIN_ROUTE} from "../../constants/routeContants";
+import {NavLink, useNavigate} from 'react-router-dom'
 
 export const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // const [userRemember, setUserRemember] = useState(false);
+    const [remember, setRemember] = useState(false);
+    const [authToken, setAuthToken] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const checkUser = async () => {
         const response = await authService.login({username, password});
-        console.log("response", response.data.id_token);
-        if (response.data) {
+        if (response.data.id_token) {
+            localStorage.setItem('token_expires_in', response.data.expires_in)
             localStorage.setItem('auth_token', response.data.id_token);
             dispatch(setUser({
-                ...response.data,
+                id_token: response.data.id_token,
+                username: username,
+                remember: remember,
                 isAuth: true
             }))
+            setAuthToken(true)
             navigate('/')
+            message.success('Login is success')
+        } else {
+            message.error('Ошибка при входе в свой аккаунт')
         }
     }
 
 
     const onFinish = (values) => {
-        console.log('Success:', values);
+        console.log(values);
     };
 
 
@@ -57,11 +63,15 @@ export const Login = () => {
                     autoComplete="off"
                     className='login-page__form'
                 >
+                    {authToken ? <Alert message="Неверный логин или пароль" type="error" showIcon/> : ''}
                     <Form.Item
                         label="Имя пользователя"
                         name="username"
                         rules={[
-                            {required: true, message: 'Пожалуйста, введите имя пользователя!!!'},
+                            {
+                                required: true,
+                                message: 'Пожалуйста, введите имя пользователя!!!',
+                            },
                         ]}
                     >
                         <Input
@@ -83,18 +93,17 @@ export const Login = () => {
                             onChange={event => setPassword(event.target.value)}
                         />
                     </Form.Item>
-                    {/*<Form.Item*/}
-                    {/*    style={{textAlign: "left"}}*/}
-                    {/*    name="remember"*/}
-                    {/*    valuePropName="checked"*/}
-                    {/*    wrapperCol={{span: 24,}}*/}
-                    {/*>*/}
-                    {/*    <Checkbox*/}
-                    {/*        onChange={event => setUserRemember(event.target.value)}*/}
-                    {/*    >*/}
-                    {/*        Remember me*/}
-                    {/*    </Checkbox>*/}
-                    {/*</Form.Item>*/}
+                    <Form.Item
+                        style={{textAlign: "left"}}
+                        name="remember"
+                        valuePropName="checked"
+                        wrapperCol={{span: 24,}}
+                    >
+                        <Checkbox onChange={event => setRemember(event.target.value)}>
+                            Remember me
+                        </Checkbox>
+                        <NavLink to='/confirmPhoneNumber'>Забыли пароль? </NavLink>
+                    </Form.Item>
                     <Form.Item wrapperCol={{span: 24}} className='login-page__form__submit'>
                         <Button
                             type="primary"

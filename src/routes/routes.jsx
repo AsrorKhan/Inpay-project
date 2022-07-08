@@ -1,9 +1,8 @@
 import {
-    ANALYSIS_ROUTE, CONFIRM_RECOVER_CODE, CONFIRM_RECOVER_PASSWORD,
+    ANALYSIS_ROUTE, CONFIRM_PHONE_NUMBER, CONFIRM_RECOVER_CODE, CONFIRM_RECOVER_PASSWORD,
     HOME_ROUTE,
     LOGIN_ROUTE,
     PARTNERS_ROUTE,
-    RECOVER_PASSWORD_MAIN_ROUTE
 } from "../constants/routeContants";
 import {Home} from "../pages/home/home";
 import {Analysis} from "../pages/analysis/analysis";
@@ -22,23 +21,22 @@ export const publicRoutes = [
     },
 ]
 
+
 export const recoverPasswordRoutes = [
     {
-        path: RECOVER_PASSWORD_MAIN_ROUTE,
+        path: CONFIRM_PHONE_NUMBER,
         component: <SetPhoneNumber/>,
-        permissions: [],
-        childRoutes: [
-            {
-                path: CONFIRM_RECOVER_CODE,
-                component: <ConfirmCode/>,
-                permissions: [],
-            },
-            {
-                path: CONFIRM_RECOVER_PASSWORD,
-                component: <RecoverPassword/>,
-                permissions: []
-            }
-        ]
+        permissions: []
+    },
+    {
+        path: CONFIRM_RECOVER_CODE,
+        component: <ConfirmCode/>,
+        permissions: []
+    },
+    {
+        path: CONFIRM_RECOVER_PASSWORD,
+        component: <RecoverPassword/>,
+        permissions: []
     }
 ]
 

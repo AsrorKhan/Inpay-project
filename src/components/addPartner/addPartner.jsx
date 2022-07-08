@@ -1,61 +1,76 @@
-import React, {useState} from 'react';
-import {Button, Drawer, Form, Input, message, Upload} from "antd";
+import React, {useRef, useState} from 'react';
+import {Button, Drawer, Form, message} from "antd";
 import {Icon} from "../icon/icon";
-import {LoadingOutlined, PlusOutlined, CheckOutlined} from '@ant-design/icons';
+import {CheckOutlined, PlusOutlined} from '@ant-design/icons';
 import iconPlus from '../../assets/icons/icon-plus.svg'
 import './addPartner.scss';
+import {TextField} from "@mui/material";
+import InputMask from "react-input-mask";
+import {changeFormatPhoneNumber} from "../../helpers/changeFormatNumber";
+import userService from "../../services/userService";
 
 export const AddPartner = () => {
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState();
 
+    const [imageUrl, setImageUrl] = useState();
+    const [partnerName, setPartnerName] = useState('');
+    const [partnerPhoneNumber, setPartnerPhoneNumber] = useState('');
+    const [disableSendButton, setDisableSendButton] = useState(true)
+    const [userLogo, setUserLogo] = useState({})
+    const filePicker = useRef(null)
     const onClose = () => {
         setVisible(false);
     };
     const showDrawer = () => {
         setVisible(true);
     };
+    const handlePick = () => {
+        filePicker.current.click()
+    }
 
-    const handleChange = (info) => {
-        if (info.file.status === 'uploading') {
-            setLoading(true);
-            return;
+    const handleChangeUpload = (event) => {
+        try {
+            let value = event.target.files[0];
+            console.log(value);
+            setUserLogo(value)
+        } catch (e) {
+            console.log(e);
         }
     }
 
-    const uploadButton = (
-        <div>
-            {loading ? <LoadingOutlined/> : <PlusOutlined/>}
-            <div
-                style={{
-                    marginTop: 8,
-                }}
-            >
-            </div>
-        </div>
-    );
-    const getBase64 = (img, callback) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
-    };
-
-    const beforeUpload = (file) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-
-        if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
+    const handleUploadLogo = async () => {
+        if (!userLogo) {
+            message.error('Пожалуйста устоновите логотип')
+            return;
         }
+        let formData = new FormData();
+        formData.append('file', userLogo);
+        const response = await userService.uploadUserLogo(formData)
+    }
 
-        const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
+    const createNewPartner = async () => {
+        const formattedPartnerPhoneNumber = changeFormatPhoneNumber(partnerPhoneNumber)
+        await handleUploadLogo();
+        try {
+            if (partnerName.length > 0) {
+                const newPartnerData = {
+                    login: formattedPartnerPhoneNumber,
+                    firstName: partnerName
+                }
+                const response = await userService.registerNewPartner(newPartnerData);
+                if (response.data.success) {
+                    message.success('Партнер создано успешно!!!');
+                }else {
+                    message.error("При создание нового партнера произошло ошибка")
+                }
+            }
+
+        } catch (e) {
+            console.log(e);
         }
-
-        return isJpgOrPng && isLt2M;
-    };
+    }
 
 
     return (
@@ -68,55 +83,85 @@ export const AddPartner = () => {
             <Drawer className='add-partner__drawer' placement="right" onClose={onClose} size={"412px"}
                     visible={visible}>
                 <h3 className='add-partner__title'>Добавить нового партнера</h3>
-                <Form className="add-partner-form">
-                    <Form.Item className='add-partner-form__upload-photo'>
-                        <Upload
-                            name="avatar"
-                            listType="picture-card"
-                            className="avatar-uploader"
-                            showUploadList={false}
-                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            beforeUpload={beforeUpload}
-                            onChange={handleChange}
-                        >
-                            {imageUrl ? (
-                                <img
-                                    src={imageUrl}
-                                    alt="avatar"
-                                    style={{
-                                        width: '100%',
-                                    }}
+                <form className="add-partner__form">
+                    <div>
+                        <Form.Item className='add-partner__form__upload-photo'>
+                            <div className='add-partner__form__upload-photo__selector-wrapper'>
+                                <button
+                                    className='add-partner__form__upload-photo__selector'
+                                    onClick={handlePick}
+                                    type={"button"}
+                                >
+                                    <PlusOutlined/>
+                                </button>
+                                <input
+                                    type="file"
+                                    className='hidden'
+                                    accept='image/*, .png, .jpg, .gif, .web, .svg'
+                                    onChange={handleChangeUpload}
+                                    ref={filePicker}
                                 />
-                            ) : (
-                                uploadButton
-                            )}
-                        </Upload>
-                        <div className="add-partner-form__upload-photo-text">
+                            </div>
+
+                            <div className="add-partner-form__upload-photo-text">
                             <span
                                 className='add-partner-form__upload-photo-text__title'>Добавьте логотип партнера</span>
-                            <span className='add-partner-form__upload-photo-text__desc'>Макс.размер файла 5 MB - JPG, PNG</span>
-                        </div>
+                                <span className='add-partner-form__upload-photo-text__desc'> Макс.размер файла 5 MB - JPG, PNG</span>
+                            </div>
+                        </Form.Item>
+                        <Form.Item className='add-partner__form__partner-name'>
+                            <TextField
+                                label='Наименование торговой точки '
+                                focused
+                                type='text'
+                                style={{width: '100%', textAlign: 'center'}}
+                                onChange={(e) => setPartnerName(e.target.value)}
+                                margin={"normal"}
+                                color={'info'}
+                            />
+                        </Form.Item>
+                        <Form.Item className='add-partner__form__partner-phone-number'>
+                            <InputMask
+                                mask={'(+998) ## ### ## ##'}
+                                defaultValue={partnerPhoneNumber}
+                                onChange={(e) => setPartnerPhoneNumber(e.target.value)}
+                                alwaysShowMask={true}
+                                formatChars={{
+                                    '#': '[0-9]'
+                                }}
+                                placeholder='Введите ваш логин'>
+                                {(inputProps) =>
+                                    <TextField
+                                        {...inputProps}
+                                        color={'info'}
+                                        label="Ваш логин"
+                                        focused
+                                        margin={"normal"}
+                                        style={{width: '100%', textAlign: 'center'}}
+                                    />
+                                }
+                            </InputMask>
+                        </Form.Item>
+                    </div>
+                    {/*<Form.Item className='add-partner__form__title-security'>*/}
+                    {/*    <span>Безопасность</span>*/}
+                    {/*    <hr/>*/}
+                    {/*</Form.Item>*/}
+                    {/*<Form.Item className='add-partner__form__partner-login'>*/}
+                    {/*    <label htmlFor="partnerName">Номер телефона</label>*/}
+                    {/*    <Input placeholder='Введите номер телефона'  id='partnerName'/>*/}
+                    {/*</Form.Item>*/}
+                    <Form.Item className='add-partner__form__partner-data-submit'>
+                        <Button
+                            type={"primary"}
+                            size={"large"}
+                            onClick={() => createNewPartner()}
+                        >
+                            <CheckOutlined/>
+                            Сохранить
+                        </Button>
                     </Form.Item>
-                    <Form.Item className='add-partner-form__partner-name'>
-                        <label htmlFor="partnerName">Наименования торговой точки</label>
-                        <Input placeholder='Введите наименования торговой точки'  id='partnerName'/>
-                    </Form.Item>
-                    <Form.Item className='add-partner-form__partner-phone-number'>
-                        <label htmlFor="partnerName">Номер телефона</label>
-                        <Input placeholder='Введите номер телефона'  id='partnerName'/>
-                    </Form.Item>
-                    <Form.Item className='add-partner-form__title-security'>
-                        <span>Безопасность</span>
-                        <hr/>
-                    </Form.Item>
-                    <Form.Item className='add-partner-form__partner-login'>
-                        <label htmlFor="partnerName">Номер телефона</label>
-                        <Input placeholder='Введите номер телефона'  id='partnerName'/>
-                    </Form.Item>
-                    <Form.Item className='add-partner-form__partner-data-submit'>
-                        <Button type={"primary"} size={"large"}><CheckOutlined />Сохранить</Button>
-                    </Form.Item>
-                </Form>
+                </form>
             </Drawer>
         </div>
     );
