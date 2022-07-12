@@ -75,7 +75,7 @@ export const RecoverPassword = () => {
     };
 
     const changePassword = async () => {
-        const login = localStorage.getItem('login')
+        const login = localStorage.getItem('userLogin')
         const key = localStorage.getItem('verificationCode');
         const newPassword = newUserPassword;
         const recoverPasswordData = {
@@ -86,9 +86,8 @@ export const RecoverPassword = () => {
         const response = await accountService.recoverPassword(recoverPasswordData)
         if (response.data.success) {
             message.success('Пароль изменилась успешно');
-            localStorage.removeItem('login');
-            localStorage.removeItem('verificationCode');
             navigate(`/${LOGIN_ROUTE}`)
+            localStorage.clear()
         }
     }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {menuLinks} from "../../constants/menuLinks";
 import { NavLink} from "react-router-dom";
 import {Header} from "antd/es/layout/layout";
@@ -60,8 +60,8 @@ const HeaderComponent = () => {
                             <span className='user__avatar-wrapper__dropdown-elements'>
                                 <Avatar size={44} src={<img src={avatar} alt="avatar" />} />
                                 <ul className='user__user-data' style={{padding: 0, margin: 0, listStyle: "none"}}>
-                                    <li className='user__user-data__username'>Abdullayev Alisher</li>
-                                    <li className='user__user-data__user-role'>Super admin</li>
+                                    <li className='user__user-data__username'>{localStorage.getItem('username')}</li>
+                                    {/*<li className='user__user-data__user-role'>Super admin</li>*/}
                                 </ul>
                             </span>
                         </Dropdown>
