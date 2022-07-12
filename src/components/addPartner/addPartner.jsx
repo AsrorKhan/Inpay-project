@@ -32,7 +32,6 @@ export const AddPartner = () => {
     const handleChangeUpload = (event) => {
         try {
             let value = event.target.files[0];
-            console.log(value);
             setUserLogo(value)
         } catch (e) {
             console.log(e);

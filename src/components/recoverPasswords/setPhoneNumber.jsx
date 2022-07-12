@@ -18,17 +18,22 @@ export const SetPhoneNumber = () => {
 
     const sendPhoneNumber = async () => {
         try {
+
             if (phoneNumber.length > 0) {
                 const formattedValue = changeFormatPhoneNumber(phoneNumber)
+
                 const accountData = {
                     login: formattedValue,
                     langKey: 'ru'
                 }
-                localStorage.setItem('login', formattedValue)
                 const response = await accountService.resetPassword(accountData)
-                if (response.data.success) {
+                if (response?.data?.success) {
+                    localStorage.setItem('userLogin', formattedValue)
+                    console.log("formattedValue", formattedValue);
                     message.success('Запрос успешно отправлен')
                     navigate(`/${CONFIRM_RECOVER_CODE}`)
+                }else {
+                    message.error('Такого аккаунта не сушествует')
                 }
             }
 

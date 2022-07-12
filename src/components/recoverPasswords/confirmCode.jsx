@@ -15,14 +15,15 @@ export const ConfirmCode = () => {
     const navigate = useNavigate()
     const sendVerificationCode = async () => {
         try {
-            const login = localStorage.getItem('login');
+            const login = localStorage.getItem('userLogin');
             const verificationData = {
                 login,
                 key: verificationCode
             }
             const response = await accountService.checkRecoverCode(verificationData)
-            if(response.data.success) {
+            if(response?.data?.success) {
                 localStorage.setItem('verificationCode', verificationCode)
+                localStorage.setItem('userLogin', login)
                 navigate(`/${CONFIRM_RECOVER_PASSWORD}`)
             }
         } catch (e) {

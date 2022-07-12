@@ -8,6 +8,7 @@ import {iconsList} from "../../helpers/iconsList";
 import {useDispatch} from "react-redux";
 import {setUser} from "../../store/reducer/users";
 import {NavLink, useNavigate} from 'react-router-dom'
+import jwtDecode from "jwt-decode";
 
 export const Login = () => {
     const [username, setUsername] = useState('');
@@ -17,11 +18,16 @@ export const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const checkUser = async () => {
+    const onFinish = async (values) => {
+        // console.log(values);
         const response = await authService.login({username, password});
-        if (response.data.id_token) {
-            localStorage.setItem('token_expires_in', response.data.expires_in)
-            localStorage.setItem('auth_token', response.data.id_token);
+        const userData = response?.data
+        if (userData?.id_token) {
+            const decodeToken = jwtDecode(userData?.id_token)
+            localStorage.setItem('auth_token', userData.id_token);
+            localStorage.setItem('username', decodeToken?.sub)
+            const token_expire = String(new Date(userData?.expires_in).getTime() * 1000);
+            localStorage.setItem('token_expire', token_expire)
             dispatch(setUser({
                 id_token: response.data.id_token,
                 username: username,
@@ -34,11 +40,6 @@ export const Login = () => {
         } else {
             message.error('Ошибка при входе в свой аккаунт')
         }
-    }
-
-
-    const onFinish = (values) => {
-        console.log(values);
     };
 
 
@@ -109,7 +110,6 @@ export const Login = () => {
                             type="primary"
                             htmlType="submit"
                             className='login-page__form__submit-button'
-                            onClick={checkUser}
                         >
                             Войти
                         </Button>

@@ -1,12 +1,11 @@
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 import authService from "./authService";
 
 export const BASE_URL = 'http://192.168.163.156:8080';
 
 
 export const $instance = axios.create({
-    baseURL: process.env.NODE_ENV ==='development' ? '' : BASE_URL,
+    baseURL: process.env.NODE_ENV === 'development' ? '' : BASE_URL,
     // baseURL: "",
     withCredentials: true,
 })
@@ -14,10 +13,10 @@ export const $instance = axios.create({
 
 $instance.interceptors.request.use((config) => {
     const login_auth_token = localStorage.getItem('auth_token');
-    const token_expires_in = localStorage.getItem('token_expires_in');
-    const endDate = new Date(`${token_expires_in}`).getTime();
+    const token_expire = localStorage.getItem('token_expire');
 
-    if (endDate * 1000 < Date.now()) {
+    if (token_expire < (new Date().getTime())) {
+        localStorage.clear()
         authService.logOut();
     }
     if (login_auth_token) {
