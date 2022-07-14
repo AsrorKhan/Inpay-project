@@ -1,43 +1,34 @@
 import axios from "axios";
 import authService from "./authService";
 
-export const BASE_URL = 'http://192.168.163.156:8080';
+export const DEV_MODE_URL = process.env["REACT_APP_DEV_MODE_URL "];
+export const BASE_URL = process.env["REACT_APP_DEV_MODE_URL "];
 
 
 export const $instance = axios.create({
-    baseURL: process.env.NODE_ENV === 'development' ? '' : BASE_URL,
-    // baseURL: "",
+    baseURL: process.env.NODE_ENV === 'development' ? DEV_MODE_URL : BASE_URL,
     withCredentials: true,
 })
 
-
+// interceptors for request
 $instance.interceptors.request.use((config) => {
     const login_auth_token = localStorage.getItem('auth_token');
-    const token_expire = localStorage.getItem('token_expire');
-
-    if (token_expire < (new Date().getTime())) {
-        localStorage.clear()
-        authService.logOut();
-    }
     if (login_auth_token) {
         config.headers.Authorization = `Bearer ${login_auth_token}`
     }
     return config
 })
 
+
+// interceptors for response
 $instance.interceptors.response.use(
-    (res) => {
-        return res;
+    response => {
+        return response;
     },
-    async (err) => {
-        const originalConfig = err.config;
-
-        if (originalConfig.url !== '/auth/login' && err.response) {
-            if (err.response.status === 401) {
-                authService.logout();
-            }
+    error => {
+        const config = error?.config
+        if (error?.response?.status === 401 && config?.url !== '/api/authenticate') {
+            authService.logOut();
         }
-
-        return Promise.reject(err);
     }
 );

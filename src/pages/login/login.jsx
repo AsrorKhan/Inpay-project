@@ -19,26 +19,28 @@ export const Login = () => {
     const navigate = useNavigate()
 
     const onFinish = async (values) => {
-        // console.log(values);
-        const response = await authService.login({username, password});
-        const userData = response?.data
-        if (userData?.id_token) {
-            const decodeToken = jwtDecode(userData?.id_token)
-            localStorage.setItem('auth_token', userData.id_token);
-            localStorage.setItem('username', decodeToken?.sub)
-            const token_expire = String(new Date(userData?.expires_in).getTime() * 1000);
-            localStorage.setItem('token_expire', token_expire)
-            dispatch(setUser({
-                id_token: response.data.id_token,
-                username: username,
-                remember: remember,
-                isAuth: true
-            }))
-            setAuthToken(true)
-            navigate('/')
-            message.success('Login is success')
-        } else {
-            message.error('Ошибка при входе в свой аккаунт')
+        console.log(values);
+        try {
+            const response = await authService.login({username, password});
+            const userData = response?.data
+            if (userData?.id_token) {
+                const decodeToken = jwtDecode(userData?.id_token)
+                localStorage.setItem('auth_token', userData.id_token);
+                localStorage.setItem('username', decodeToken?.sub)
+                const token_expire = String(new Date(userData?.expires_in).getTime());
+                localStorage.setItem('token_expire', token_expire)
+                dispatch(setUser({
+                    id_token: response.data.id_token,
+                    username: username,
+                    remember: remember,
+                    isAuth: true
+                }))
+                setAuthToken(true)
+                navigate('/')
+                message.success('Добро пожаловать', 1.5)
+            }
+        } catch (e) {
+            message.error(e.message)
         }
     };
 
@@ -95,15 +97,15 @@ export const Login = () => {
                         />
                     </Form.Item>
                     <Form.Item
-                        style={{textAlign: "left"}}
+                        className='login-page__form__remember-forget'
                         name="remember"
                         valuePropName="checked"
                         wrapperCol={{span: 24,}}
                     >
                         <Checkbox onChange={event => setRemember(event.target.value)}>
-                            Remember me
+                            Запомните меня
                         </Checkbox>
-                        <NavLink to='/confirmPhoneNumber'>Забыли пароль? </NavLink>
+                        <NavLink to='/confirmPhoneNumber' className='login-page__form__remember-forget__nav-link'>Забыли пароль? </NavLink>
                     </Form.Item>
                     <Form.Item wrapperCol={{span: 24}} className='login-page__form__submit'>
                         <Button

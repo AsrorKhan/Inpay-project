@@ -61,9 +61,21 @@
     &__password-checker{
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: space-between;
+      width: 100%;
       margin-top: 10px;
-
+      &__indicator {
+        display: flex;
+      }
+      &__indicator-message {
+        font-size: 12px;
+        font-weight: bold;
+      }
+      &__length-error {
+        font-size: 12px;
+        font-weight: bold;
+        color: red;
+      }
       .password {
         width: 60px;
         height: 4px;
@@ -73,10 +85,10 @@
         background: red;
       }
       .normal {
-        background: #E37610;
+        background: darkorange;
       }
-      .strength {
-        background: #3DEC44;
+      .strong {
+        background: greenyellow;
       }
 
     }

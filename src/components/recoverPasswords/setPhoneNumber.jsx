@@ -5,7 +5,7 @@ import {iconsList} from "../../helpers/iconsList";
 import mainIcon from "../../assets/main-logo.svg";
 import './index.scss'
 import {TextField} from "@mui/material";
-import {Alert, Button, Form, message} from "antd";
+import {Button, Form, message} from "antd";
 import accountService from "../../services/accountService";
 import {useNavigate} from "react-router-dom";
 import {CONFIRM_RECOVER_CODE} from "../../constants/routeContants";
@@ -14,14 +14,12 @@ import {changeFormatPhoneNumber} from "../../helpers/changeFormatNumber";
 
 export const SetPhoneNumber = () => {
     const [phoneNumber, setPhoneNumber] = useState('')
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const sendPhoneNumber = async () => {
         try {
-
             if (phoneNumber.length > 0) {
                 const formattedValue = changeFormatPhoneNumber(phoneNumber)
-
                 const accountData = {
                     login: formattedValue,
                     langKey: 'ru'
@@ -29,12 +27,12 @@ export const SetPhoneNumber = () => {
                 const response = await accountService.resetPassword(accountData)
                 if (response?.data?.success) {
                     localStorage.setItem('userLogin', formattedValue)
-                    console.log("formattedValue", formattedValue);
                     message.success('Запрос успешно отправлен')
                     navigate(`/${CONFIRM_RECOVER_CODE}`)
-                }else {
-                    message.error('Такого аккаунта не сушествует')
+                } else {
+                    console.log("response.data", response.data);
                 }
+
             }
 
         } catch (e) {
@@ -64,7 +62,6 @@ export const SetPhoneNumber = () => {
                             '#': '[0-9]'
                         }}
                         placeholder='Введите ваш логин'>
-
                         {(inputProps) =>
                             <TextField
                                 {...inputProps}
@@ -72,6 +69,7 @@ export const SetPhoneNumber = () => {
                                 label="Ваш логин"
                                 focused
                                 style={{width: '100%', textAlign: 'center'}}
+                                required={true}
                             />
                         }
                     </InputMask>
@@ -82,7 +80,6 @@ export const SetPhoneNumber = () => {
                     className='recover-password-component__set-phone-number__send-button'
                     size={"large"}
                     style={{borderRadius: '10px', width: '100%'}}
-                    // disabled={disableSendButton}
                 >
                     Отправить
                 </Button>

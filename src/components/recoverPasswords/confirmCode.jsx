@@ -10,9 +10,22 @@ import {useNavigate} from "react-router-dom";
 import {CONFIRM_RECOVER_PASSWORD} from "../../constants/routeContants";
 
 export const ConfirmCode = () => {
+
     const verificationCodeLength = 5;
     const [verificationCode, setVerificationCode] = useState('');
-    const navigate = useNavigate()
+    const [disableSendButton, setDisableButton] = useState(true)
+    const navigate = useNavigate();
+
+    const confirmVerificationCode = (event) => {
+        setVerificationCode(event);
+        if (verificationCode.length === 4) {
+            setDisableButton(false)
+        } else {
+            setDisableButton(true)
+        }
+
+    }
+
     const sendVerificationCode = async () => {
         try {
             const login = localStorage.getItem('userLogin');
@@ -21,7 +34,7 @@ export const ConfirmCode = () => {
                 key: verificationCode
             }
             const response = await accountService.checkRecoverCode(verificationData)
-            if(response?.data?.success) {
+            if (response?.data?.success) {
                 localStorage.setItem('verificationCode', verificationCode)
                 localStorage.setItem('userLogin', login)
                 navigate(`/${CONFIRM_RECOVER_PASSWORD}`)
@@ -46,7 +59,8 @@ export const ConfirmCode = () => {
                 <ReactCodeInput
                     fields={verificationCodeLength}
                     values={verificationCode}
-                    onChange={(e) => setVerificationCode(e)}
+                    onChange={(e) => confirmVerificationCode(e)}
+                    onComplete={()=>setDisableButton(false)}
                 />
                 <Button
                     type={"primary"}
@@ -54,6 +68,7 @@ export const ConfirmCode = () => {
                     className='recover-password-component__set-phone-number__send-button'
                     size={"large"}
                     onClick={() => sendVerificationCode()}
+                    disabled={disableSendButton}
                 >
                     Отправить
                 </Button>
