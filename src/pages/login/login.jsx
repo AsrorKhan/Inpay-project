@@ -36,7 +36,11 @@ export const Login = () => {
                     isAuth: true
                 }))
                 setAuthToken(true)
-                navigate('/')
+                if (decodeToken?.auth?.includes('ROLE_ADMIN')) {
+                    navigate('/')
+                } else {
+                    navigate('/analysis')
+                }
                 message.success('Добро пожаловать', 1.5)
             }
         } catch (e) {

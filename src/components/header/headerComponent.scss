@@ -21,6 +21,7 @@
       &__avatar-wrapper {
         display: flex;
         align-items: center;
+
         &:after {
           content: '';
           background: url("../../assets/icons/icon-caret-down.svg") no-repeat center center;
@@ -30,6 +31,7 @@
           margin-left: 10px;
 
         }
+
         &__dropdown-elements {
           display: flex;
           align-items: center;
@@ -64,7 +66,7 @@
     width: 325px;
     height: 45px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
     a {
@@ -73,6 +75,10 @@
       font-size: 16px;
       letter-spacing: .2px;
       position: relative;
+    }
+
+    a:nth-child(2) {
+      margin: 0 52px;
     }
 
     .active-link {
