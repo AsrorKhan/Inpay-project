@@ -1,17 +1,31 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Col, DatePicker, PageHeader, Row, Select, Table} from "antd";
 import {partnersTableColumns} from "../../helpers/dataTableColumns/partnersTableColumns";
-import {partnersTableMockData} from "../../helpers/mockData/partnersTableMockData";
 import {Icon} from "../../components/icon/icon";
 import iconCalendar from "../../assets/icons/icon-calendar.png";
 import {Option} from "antd/es/mentions";
 import {AddPartner} from "../../components/addPartner/addPartner";
 import {ChangePartner} from "../../components/changePartner/changePartner";
 import HeaderComponent from "../../components/header/headerComponent";
+import {useDispatch, useSelector} from "react-redux";
+import partnersService from "../../services/partnersService";
+import {setPartners} from "../../store/reducer/partners";
 
 export const Partners = () => {
     const [viewCountTable, setViewCountTable] = useState(10)
     const [changeInformation, setChangeInformation] = useState(false)
+    const partnersList = useSelector(state => state.partners)
+    const dispatch = useDispatch()
+    useEffect(async () => {
+        await loadPartnersList();
+    }, [])
+
+
+    async function loadPartnersList() {
+        const response = await partnersService.loadPartnersList();
+        dispatch(setPartners(response.data))
+        console.log(response.data);
+    }
 
 
     const onChange = (date, dateString) => {
@@ -43,8 +57,8 @@ export const Partners = () => {
                     />
                     <Table
                         columns={partnersTableColumns}
-                        dataSource={partnersTableMockData}
-                        rowKey={(r) => r.id}
+                        dataSource={[]}
+                        rowKey='login'
                         onRow={(record, rowIndex) => {
                             return {
                                 onClick: event => {

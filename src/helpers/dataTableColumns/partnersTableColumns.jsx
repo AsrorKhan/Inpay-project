@@ -4,24 +4,20 @@ import {RecoverPasswordModal} from "../../components/recoverPasswordModal/recove
 export const partnersTableColumns = [
     {
         title: 'партнеры',
-        dataIndex: 'partners',
-        key: 'partners'
+        dataIndex: 'firstName',
     },
     {
         title: 'Номер тел',
-        dataIndex: 'phoneNumber',
-        key: 'phoneNumber'
+        dataIndex: 'login',
     },
     {
         title: 'Статус',
-        dataIndex: 'status',
-        key: '',
+        dataIndex: 'activated',
         render: (text, record) => <SwitcherActivator status={text}/>
     },
     {
         title: 'Забыли пароль',
-        dataIndex: 'restorePassword',
-        key: 'restorePassword',
+        dataIndex: '',
         render: (text, record) => <RecoverPasswordModal />
     },
 ]
