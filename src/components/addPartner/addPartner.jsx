@@ -11,12 +11,9 @@ import userService from "../../services/userService";
 
 export const AddPartner = () => {
     const [visible, setVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const [imageUrl, setImageUrl] = useState();
     const [partnerName, setPartnerName] = useState('');
     const [partnerPhoneNumber, setPartnerPhoneNumber] = useState('');
-    const [disableSendButton, setDisableSendButton] = useState(true)
+    const [partnerPercent, setPartnerPercent] = useState('')
     const [userLogo, setUserLogo] = useState({})
     const filePicker = useRef(null)
     const onClose = () => {
@@ -39,13 +36,18 @@ export const AddPartner = () => {
     }
 
     const handleUploadLogo = async () => {
-        if (!userLogo) {
-            message.error('Пожалуйста устоновите логотип')
-            return;
+        try {
+            if (!userLogo) {
+                message.error('Пожалуйста устоновите логотип')
+                return;
+            }
+            let formData = new FormData();
+            formData.append('file', userLogo);
+            const response = await userService.uploadUserLogo(formData)
+            console.log(response.data);
+        } catch (e) {
+            message.error('Пожалуйста выберите логотип');
         }
-        let formData = new FormData();
-        formData.append('file', userLogo);
-        const response = await userService.uploadUserLogo(formData)
     }
 
 
@@ -56,12 +58,15 @@ export const AddPartner = () => {
             if (partnerName.length > 0) {
                 const newPartnerData = {
                     login: formattedPartnerPhoneNumber,
-                    firstName: partnerName
+                    firstName: partnerName,
+                    percent: partnerPercent
                 }
                 const response = await userService.registerNewPartner(newPartnerData);
-                if (response.data.success) {
+                if (response?.data?.success) {
                     message.success('Партнер создано успешно!!!');
-                }else {
+                    await resetForm();
+
+                } else {
                     message.error("При создание нового партнера произошло ошибка")
                 }
             }
@@ -69,6 +74,13 @@ export const AddPartner = () => {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    const resetForm = () => {
+        setPartnerPhoneNumber('');
+        setPartnerName('');
+        setPartnerPercent('');
+        setUserLogo({});
     }
 
 
@@ -141,15 +153,16 @@ export const AddPartner = () => {
                                 }
                             </InputMask>
                         </Form.Item>
+                        <Form.Item className='add-partner__form__partner-login'>
+                            <TextField
+                                label='% Вставка по продукту'
+                                focused
+                                style={{width: '100%', textAlign: 'center'}}
+                                onChange={(e) => setPartnerPercent(e.target.value)}
+                            />
+                        </Form.Item>
                     </div>
-                    {/*<Form.Item className='add-partner__form__title-security'>*/}
-                    {/*    <span>Безопасность</span>*/}
-                    {/*    <hr/>*/}
-                    {/*</Form.Item>*/}
-                    {/*<Form.Item className='add-partner__form__partner-login'>*/}
-                    {/*    <label htmlFor="partnerName">Номер телефона</label>*/}
-                    {/*    <Input placeholder='Введите номер телефона'  id='partnerName'/>*/}
-                    {/*</Form.Item>*/}
+
                     <Form.Item className='add-partner__form__partner-data-submit'>
                         <Button
                             type={"primary"}

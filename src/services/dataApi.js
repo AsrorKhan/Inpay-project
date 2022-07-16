@@ -1,12 +1,12 @@
 import axios from "axios";
 import authService from "./authService";
 
-export const DEV_MODE_URL = process.env["REACT_APP_DEV_MODE_URL "];
-export const BASE_URL = process.env["REACT_APP_DEV_MODE_URL "];
+// export const DEV_MODE_URL = process.env["REACT_APP_DEV_MODE_URL "];
+export const BASE_URL = 'http://192.168.163.156:8080'
 
 
 export const $instance = axios.create({
-    baseURL: process.env.NODE_ENV === 'development' ? DEV_MODE_URL : BASE_URL,
+    baseURL: process.env.NODE_ENV === 'development' ? '' : BASE_URL,
     withCredentials: true,
 })
 

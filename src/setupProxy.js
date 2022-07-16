@@ -5,7 +5,7 @@ module.exports = app => {
     app.use(
         ['/auth', '/api', '/services' ],
         createProxyMiddleware({
-            target: process.env["REACT_APP_DEV_MODE_URL"],
+            target: 'http://192.168.163.156:8080',
             changeOrigin: true,
         })
     );
