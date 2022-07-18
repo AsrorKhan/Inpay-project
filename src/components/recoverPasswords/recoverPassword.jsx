@@ -54,7 +54,7 @@ export const RecoverPassword = () => {
                 setPasswordIsStrong(false)
             }
         } catch (e) {
-            console.log(e);
+            console.log("catch: ",e);
         }
     }
 
@@ -81,7 +81,7 @@ export const RecoverPassword = () => {
                 localStorage.clear()
             }
         } catch (e) {
-            console.log(e);
+            console.log("catch: ",e);
         }
     }
 

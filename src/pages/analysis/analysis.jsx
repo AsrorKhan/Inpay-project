@@ -34,15 +34,15 @@ export const Analysis = () => {
                 <Col span={18}>
                     <div className="analysis-component__header-results">
                         <div className="analysis-component__header-results__sales">
-                            <h2 className='analysis-component__header-results__sales__title'>10</h2>
+                            <h2 className='analysis-component__header-results__sales__title'>1 000 000 000</h2>
                             <span className='analysis-component__header-results__sales__subtitle'>Кол-во партнеров</span>
                         </div>
                         <div className="analysis-component__header-results__purchase">
-                            <h2 className='analysis-component__header-results__purchase__title'>10 000 000</h2>
+                            <h2 className='analysis-component__header-results__purchase__title'>10 000 000 000 000 000 </h2>
                             <span className='analysis-component__header-results__purchase__subtitle'>Итого цена поставщика</span>
                         </div>
                         <div className="analysis-component__header-results__return">
-                            <h2 className='analysis-component__header-results__sales__title'>20 000 000</h2>
+                            <h2 className='analysis-component__header-results__sales__title'>20 000 000 000 000 </h2>
                             <span className='analysis-component__header-results__return__subtitle'>Итого в рассрочку</span>
                         </div>
                     </div>

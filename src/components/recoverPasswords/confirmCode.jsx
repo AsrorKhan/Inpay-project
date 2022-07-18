@@ -40,7 +40,7 @@ export const ConfirmCode = () => {
                 navigate(`/${CONFIRM_RECOVER_PASSWORD}`)
             }
         } catch (e) {
-            console.log(e);
+            console.log("catch: ",e);
         }
     }
 

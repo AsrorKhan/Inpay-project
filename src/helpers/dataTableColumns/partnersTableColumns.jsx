@@ -11,6 +11,11 @@ export const partnersTableColumns = [
         dataIndex: 'login',
     },
     {
+        title: '% вставка',
+        dataIndex: 'percent',
+        render: (_, record) => <>{record.percent ? `${record.percent} %` : '0 %'}</>
+    },
+    {
         title: 'Статус',
         dataIndex: 'activated',
         render: (text, record) => <SwitcherActivator status={text}/>
@@ -18,6 +23,6 @@ export const partnersTableColumns = [
     {
         title: 'Забыли пароль',
         dataIndex: '',
-        render: (text, record) => <RecoverPasswordModal />
+        render: (text, record) => <RecoverPasswordModal/>
     },
 ]

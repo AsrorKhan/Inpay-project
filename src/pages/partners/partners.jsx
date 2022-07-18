@@ -12,21 +12,19 @@ import partnersService from "../../services/partnersService";
 import {setPartners} from "../../store/reducer/partners";
 
 export const Partners = () => {
-    const [viewCountTable, setViewCountTable] = useState(10)
-    const [changeInformation, setChangeInformation] = useState(false)
-    const partnersList = useSelector(state => state.partners)
-    const dispatch = useDispatch()
-    useEffect(async () => {
-        await loadPartnersList();
+    const [viewCountTable, setViewCountTable] = useState(10);
+    const [changeInformation, setChangeInformation] = useState(false);
+    const partnersList = useSelector(state => state.partners);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        partnersService.loadPartnersList()
+            .then((response) => {
+                dispatch(setPartners({
+                    content: response.data
+                }))
+            })
+            .catch((e) => console.log("catch: ", e));
     }, [])
-
-
-    async function loadPartnersList() {
-        const response = await partnersService.loadPartnersList();
-        dispatch(setPartners(response.data))
-        console.log(response.data);
-    }
-
 
     const onChange = (date, dateString) => {
         console.log(date, dateString);
@@ -57,7 +55,7 @@ export const Partners = () => {
                     />
                     <Table
                         columns={partnersTableColumns}
-                        dataSource={[]}
+                        dataSource={partnersList.content}
                         rowKey='login'
                         onRow={(record, rowIndex) => {
                             return {
@@ -87,17 +85,17 @@ export const Partners = () => {
                                     </Select></div>
                                 <div className='ant-table__amounts'>
                                     <span className='ant-table__amounts-title'>Итого цена поставщика</span>
-                                    <span className='ant-table__amounts-amount'>10 000 000 UZS</span>
+                                    <span className='ant-table__amounts-amount'>10 000 000 000 000 000 000 000 UZS</span>
                                 </div>
                                 <div className='ant-table__amounts'>
                                     <span className='ant-table__amounts-title'>Итого в рассрочку</span>
-                                    <span className='ant-table__amounts-amount'>23 000 000 UZS</span>
+                                    <span className='ant-table__amounts-amount'>23 000 000 000 000 000 000 000 UZS</span>
                                 </div>
                             </>
                         )}
                         pagination={{
                             position: ['bottomCenter'],
-                            pageSize: viewCountTable
+                            pageSize: viewCountTable,
                         }}
                     >
 

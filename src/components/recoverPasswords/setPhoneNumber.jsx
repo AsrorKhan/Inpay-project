@@ -36,7 +36,7 @@ export const SetPhoneNumber = () => {
             }
 
         } catch (e) {
-            console.log(e);
+            console.log("catch: ",e);
         }
     }
 

@@ -16,6 +16,7 @@ export const AddPartner = () => {
     const [partnerPercent, setPartnerPercent] = useState('')
     const [userLogo, setUserLogo] = useState({})
     const filePicker = useRef(null)
+
     const onClose = () => {
         setVisible(false);
     };
@@ -31,7 +32,7 @@ export const AddPartner = () => {
             let value = event.target.files[0];
             setUserLogo(value)
         } catch (e) {
-            console.log(e);
+            console.log("catch: ",e);
         }
     }
 
@@ -65,14 +66,12 @@ export const AddPartner = () => {
                 if (response?.data?.success) {
                     message.success('Партнер создано успешно!!!');
                     await resetForm();
-
                 } else {
                     message.error("При создание нового партнера произошло ошибка")
                 }
             }
-
         } catch (e) {
-            console.log(e);
+            console.log("catch: ",e);
         }
     }
 
