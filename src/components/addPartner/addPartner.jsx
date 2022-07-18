@@ -8,12 +8,18 @@ import {TextField} from "@mui/material";
 import InputMask from "react-input-mask";
 import {changeFormatPhoneNumber} from "../../helpers/changeFormatNumber";
 import userService from "../../services/userService";
+import {LottieAnimation} from "../animation/animation";
+import {animationSettings} from "../../assets/animationSettings";
+
 
 export const AddPartner = () => {
     const [visible, setVisible] = useState(false);
     const [partnerName, setPartnerName] = useState('');
     const [partnerPhoneNumber, setPartnerPhoneNumber] = useState('');
-    const [partnerPercent, setPartnerPercent] = useState('')
+    const [percent, setPercent] = useState('')
+    const [percentError, setPercentError] = useState(false);
+    const [successAnimate, setSuccessAnimate] = useState(false)
+    const [errorAnimate, setErrorAnimate] = useState(false)
     const [userLogo, setUserLogo] = useState({})
     const filePicker = useRef(null)
 
@@ -32,8 +38,17 @@ export const AddPartner = () => {
             let value = event.target.files[0];
             setUserLogo(value)
         } catch (e) {
-            console.log("catch: ",e);
+            console.log("catch: ", e);
         }
+    }
+
+
+    const setPartnerPercent = (event) => {
+        const withoutLetterRegExp = new RegExp(/[^\d,]/g);
+        if (withoutLetterRegExp.test(event)) {
+            setPercent(event)
+        }
+
     }
 
     const handleUploadLogo = async () => {
@@ -56,35 +71,39 @@ export const AddPartner = () => {
         const formattedPartnerPhoneNumber = changeFormatPhoneNumber(partnerPhoneNumber)
         await handleUploadLogo();
         try {
-            if (partnerName.length > 0) {
-                const newPartnerData = {
-                    login: formattedPartnerPhoneNumber,
-                    firstName: partnerName,
-                    percent: partnerPercent
-                }
-                const response = await userService.registerNewPartner(newPartnerData);
-                if (response?.data?.success) {
-                    message.success('Партнер создано успешно!!!');
-                    await resetForm();
-                } else {
-                    message.error("При создание нового партнера произошло ошибка")
-                }
+            const newPartnerData = {
+                login: formattedPartnerPhoneNumber,
+                firstName: partnerName,
+                percent: percent
             }
+            const response = await userService.registerNewPartner(newPartnerData);
+            if (response?.data?.success) {
+
+                message.success('Партнер создано успешно!!!');
+                setSuccessAnimate(true)
+                setTimeout(() => {
+                    setSuccessAnimate(false)
+                }, 1500)
+
+            } else {
+                message.error("При создание нового партнера произошло ошибка")
+                setErrorAnimate(true)
+                setTimeout(() => {
+                    setErrorAnimate(false)
+                }, 2200)
+            }
+            setPercent('');
+            setPartnerPhoneNumber('');
+            setPartnerName('')
+            setUserLogo({})
         } catch (e) {
-            console.log("catch: ",e);
+            console.log("catch: ", e);
         }
     }
-
-    const resetForm = () => {
-        setPartnerPhoneNumber('');
-        setPartnerName('');
-        setPartnerPercent('');
-        setUserLogo({});
-    }
-
-
     return (
         <div className='add-partner'>
+
+
             <Button className='add-partner__add-button' type={"primary"} size={"large"} onClick={showDrawer}>
                 <Icon content={iconPlus}/>
                 Добавить партнера
@@ -94,6 +113,12 @@ export const AddPartner = () => {
                     visible={visible}>
                 <h3 className='add-partner__title'>Добавить нового партнера</h3>
                 <form className="add-partner__form">
+                    {
+                        successAnimate ? <LottieAnimation animationData={animationSettings.successAnimation}/> : ''
+                    }
+                    {
+                        errorAnimate ? <LottieAnimation animationData={animationSettings.errorAnimation}/> : ''
+                    }
                     <div>
                         <Form.Item className='add-partner__form__upload-photo'>
                             <div className='add-partner__form__upload-photo__selector-wrapper'>

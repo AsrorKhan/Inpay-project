@@ -16,6 +16,7 @@ export const Partners = () => {
     const [changeInformation, setChangeInformation] = useState(false);
     const partnersList = useSelector(state => state.partners);
     const dispatch = useDispatch();
+
     useEffect(() => {
         partnersService.loadPartnersList()
             .then((response) => {

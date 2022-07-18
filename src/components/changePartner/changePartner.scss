@@ -1,11 +1,39 @@
 .change-partner-component {
+  .ant-drawer-body {
+    padding-top: 0;
+  }
+  &__logo {
+    position: absolute;
+    padding:  10px;
+    text-align: center;
+    z-index: 1000;
+    right: 40%;
+    left: 40%;
+    top: 145px;
+    img {
+      width: 55px;
+      height: 50px;
+      border-radius: 30px 30px 0 0 ;
+    }
+  }
+
   .ant-drawer-header {
     height: 182px;
     background: url("../../assets/bg-change-partner-header.png") no-repeat center center;
     background-size: cover;
     display: flex;
     align-items: flex-start;
-    z-index: 2;
+    justify-content: center;
+    position: relative;
+    &:before {
+      content: '';
+      width: 90px;
+      height: 40px;
+      background: #ffffff;
+      position: absolute;
+      bottom: 0;
+      border-radius: 100px 100px 0 0 ;
+    }
 
     .ant-drawer-header-title {
       button {
@@ -14,28 +42,30 @@
         border-radius: 50%;
       }
     }
+
+
   }
 
-  &__header-logo {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    z-index: 100;
-    margin-bottom: 15px;
 
-    &-merchant-logo {
-      width: 77px;
-      height: 77px;
-      border-radius: 10px;
-      background: url("../../assets/more-information-header-logo.png") no-repeat center center;
-    }
-  }
 
   &__form {
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     height: 100%;
     justify-content: space-between;
+    position: relative;
+    align-items: center;
+    &__form-elements {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start !important;
+      width: 100%;
+      .ant-form-item {
+        width: 100%;
+      }
+    }
+
 
     &__title {
       font-size: 20px;
@@ -45,11 +75,14 @@
     }
 
     &__form-actions {
+      width: 100%;
       display: flex;
       justify-content: space-between;
-
-      button {
-
+      .ant-btn-primary,
+      .ant-btn-primary{
+        border-radius: 6px;
+        display: inline-block;
+        height: 40px;
       }
     }
   }

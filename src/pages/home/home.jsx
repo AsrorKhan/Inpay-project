@@ -71,11 +71,11 @@ export const Home = () => {
                                     </Select></div>
                                 <div className='ant-table__amounts'>
                                     <span className='ant-table__amounts-title'>Итого цена поставщика</span>
-                                    <span className='ant-table__amounts-amount'>10 000 000 UZS</span>
+                                    <span className='ant-table__amounts-amount'>10 000 000 000 000 000 000 UZS</span>
                                 </div>
                                 <div className='ant-table__amounts'>
                                     <span className='ant-table__amounts-title'>Итого в рассрочку</span>
-                                    <span className='ant-table__amounts-amount'>23 000 000 UZS</span>
+                                    <span className='ant-table__amounts-amount'>23 000 000 000 000 000 000 UZS</span>
                                 </div>
                             </>
                         )}
