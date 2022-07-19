@@ -4,6 +4,8 @@ import './moreInformation.scss'
 import {RowStatus} from "../rowStatus/rowStatus";
 import {Icon} from "../icon/icon";
 import moreInformationHeaderLogo from "../../assets/more-information-header-logo.png";
+import {CurrencyFormatter} from "../currencyFormatter/currencyFormatter";
+import {DateFormatter} from "../dateFormatter/dateFormatter";
 
 export const MoreInformation = ({moreInformation, visible, onClose}) => {
 
@@ -19,28 +21,28 @@ export const MoreInformation = ({moreInformation, visible, onClose}) => {
             <List size={'large'}>
                 <List.Item className='more-information-list__list-item'>
                     <strong>ФИО покупателя</strong>
-                    <span>{moreInformation.clientFio}</span>
+                    <span>{moreInformation?.fullNameBuyers}</span>
                 </List.Item>
-                <List.Item className='more-information-list__list-item'>
-                    <strong>Номер телефона</strong>
-                    <span>{moreInformation.phoneNumber}</span>
-                </List.Item>
+                {/*<List.Item className='more-information-list__list-item'>*/}
+                {/*    <strong>Номер телефона</strong>*/}
+                {/*    <span>{moreInformation.phoneNumber}</span>*/}
+                {/*</List.Item>*/}
 
                 <List.Item className='more-information-list__list-item'>
                     <strong>Дата сделки </strong>
-                    <span>{moreInformation.dealDate}</span>
+                    <span><DateFormatter record={moreInformation.transDate}/></span>
                 </List.Item>
                 <List.Item className='more-information-list__list-item'>
                     <strong>Товар</strong>
-                    <span>{moreInformation.supplierCost}</span>
+                    <span><CurrencyFormatter currency={moreInformation.supplierCostAmount}/></span>
                 </List.Item>
                 <List.Item className='more-information-list__list-item'>
                     <strong>Товар</strong>
-                    <span>{moreInformation.product}</span>
+                    <span>{moreInformation.productName ? moreInformation.productName : 'Не задано'}</span>
                 </List.Item>
                 <List.Item className='more-information-list__list-item'>
                     <strong>Цена рассрочки </strong>
-                    <span>{moreInformation.forInstallments}</span>
+                    <span><CurrencyFormatter currency={moreInformation.installmentAmount}/></span>
                 </List.Item>
                 <List.Item className='more-information-list__list-item-status'>
                     <strong>Статус</strong>

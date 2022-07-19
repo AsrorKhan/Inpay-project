@@ -1,18 +1,33 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Col, DatePicker,  Row, Select, Table,} from "antd";
-import {homePageDataColumn} from "../../helpers/dataTableColumns/mainTableColumns";
-import {homeTableMockData} from "../../helpers/mockData/mainTableMockData";
+// import {homePageDataColumn} from "../../helpers/dataTableColumns/homeTableColumns";
+import {analysisPageDataColumn} from "../../helpers/dataTableColumns/analysisTableColumns";
 import PageTitle from "../../components/pageTitle/pageTitle";
 import {Option} from "antd/es/mentions";
 import {Icon} from "../../components/icon/icon";
 import iconCalendar from '../../assets/icons/icon-calendar.png'
 import {MoreInformation} from "../../components/moreInformation/moreInformation";
 import HeaderComponent from "../../components/header/headerComponent";
+import {useDispatch, useSelector} from "react-redux";
+import analysisService from "../../services/analysisService";
+import {setAnalysis} from "../../store/reducer/analysis";
 
 export const Home = () => {
     const [viewCountTable, setViewCountTable] = useState(10);
     const [rowMoreInformation, setRowMoreInformation] = useState({})
     const [visibleMoreInformation, setVisibleMoreInformation] = useState(false)
+    const analysisList = useSelector(state => state.analysis)
+    const dispatch = useDispatch();
+    useEffect(() => {
+        analysisService.loadAnalysisList()
+            .then((response) => {
+                dispatch(setAnalysis({
+                    content: response.data
+                }))
+                console.log("analysisList", analysisList.content);
+            })
+            .catch((e) => console.log("catch: ", e));
+    }, [])
 
     const onCloseMoreInformation = () => {
         setVisibleMoreInformation(false);
@@ -39,8 +54,8 @@ export const Home = () => {
                         visible={visibleMoreInformation}
                     />
                     <Table
-                        columns={homePageDataColumn}
-                        dataSource={homeTableMockData}
+                        columns={analysisPageDataColumn}
+                        dataSource={analysisList.content}
                         rowKey={(r) => r.key}
                         onRow={(record, rowIndex) => {
                             return {

@@ -1,18 +1,34 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Col, DatePicker, Row, Select, Table} from "antd";
 import PageTitle from "../../components/pageTitle/pageTitle";
 import {MoreInformation} from "../../components/moreInformation/moreInformation";
-import {homePageDataColumn} from "../../helpers/dataTableColumns/mainTableColumns";
-import {homeTableMockData} from "../../helpers/mockData/mainTableMockData";
+import {analysisPageDataColumn} from "../../helpers/dataTableColumns/analysisTableColumns";
 import {Icon} from "../../components/icon/icon";
 import iconCalendar from "../../assets/icons/icon-calendar.png";
 import {Option} from "antd/es/mentions";
 import './analysis.scss'
 import HeaderComponent from "../../components/header/headerComponent";
+import {useDispatch, useSelector} from "react-redux";
+import analysisService from "../../services/analysisService";
+import {setAnalysis} from "../../store/reducer/analysis";
+
 export const Analysis = () => {
     const [viewCountTable, setViewCountTable] = useState(10);
-    const [rowMoreInformation, setRowMoreInformation] = useState({})
-    const [visibleChangeInformation, setVisibleChangeInformation] = useState(false)
+    const [rowMoreInformation, setRowMoreInformation] = useState({});
+    const [visibleChangeInformation, setVisibleChangeInformation] = useState(false);
+    const analysisList = useSelector(state => state.analysis)
+    const dispatch = useDispatch();
+    useEffect(() => {
+        analysisService.loadAnalysisList()
+            .then((response) => {
+                dispatch(setAnalysis({
+                    content: response.data
+                }))
+                console.log("analysisList", analysisList.content);
+            })
+            .catch((e) => console.log("catch: ", e));
+    }, [])
+
 
     const onCloseMoreInformation = () => {
         setVisibleChangeInformation(false);
@@ -35,15 +51,18 @@ export const Analysis = () => {
                     <div className="analysis-component__header-results">
                         <div className="analysis-component__header-results__sales">
                             <h2 className='analysis-component__header-results__sales__title'>1 000 000 000</h2>
-                            <span className='analysis-component__header-results__sales__subtitle'>Кол-во партнеров</span>
+                            <span
+                                className='analysis-component__header-results__sales__subtitle'>Кол-во партнеров</span>
                         </div>
                         <div className="analysis-component__header-results__purchase">
-                            <h2 className='analysis-component__header-results__purchase__title'>10 000 000 000 000 000 </h2>
+                            <h2 className='analysis-component__header-results__purchase__title'>10 000 000 000 000
+                                000 </h2>
                             <span className='analysis-component__header-results__purchase__subtitle'>Итого цена поставщика</span>
                         </div>
                         <div className="analysis-component__header-results__return">
                             <h2 className='analysis-component__header-results__sales__title'>20 000 000 000 000 </h2>
-                            <span className='analysis-component__header-results__return__subtitle'>Итого в рассрочку</span>
+                            <span
+                                className='analysis-component__header-results__return__subtitle'>Итого в рассрочку</span>
                         </div>
                     </div>
                 </Col>
@@ -54,8 +73,8 @@ export const Analysis = () => {
                         visible={visibleChangeInformation}
                     />
                     <Table
-                        columns={homePageDataColumn}
-                        dataSource={homeTableMockData}
+                        columns={analysisPageDataColumn}
+                        dataSource={analysisList.content}
                         rowKey={(r) => r.key}
                         onRow={(record, rowIndex) => {
                             return {

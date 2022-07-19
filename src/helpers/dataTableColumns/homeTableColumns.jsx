@@ -3,33 +3,23 @@ import {RowStatus} from "../../components/rowStatus/rowStatus";
 export const homePageDataColumn = [
     {
         title: 'Название тор.точки',
-        dataIndex: 'merchantName',
-        key: 'merchantName'
+        dataIndex: 'outletName',
     },
     {
         title: 'Дата сделки',
-        dataIndex: 'dealDate',
-        key: 'dealDate'
+        dataIndex: 'transDate',
     },
     {
         title: 'Стоимость  поставщика',
-        dataIndex: 'supplierCost',
-        key: 'supplierCost'
+        dataIndex: 'supplierCostAmount',
     },
     {
         title: 'B рассрочку ',
-        dataIndex: 'forInstallments',
-        key: 'forInstallments'
-    },
-    {
-        title: '% наценки',
-        dataIndex: 'markup',
-        key: 'markup'
+        dataIndex: 'fullNameBuyers',
     },
     {
         title: 'Статус',
         dataIndex: 'status',
-        key: '',
         render: (text, record)=> <RowStatus successText={'Успешно'} failedText={'Не успешно'} status={text}/>
     },
 ]
