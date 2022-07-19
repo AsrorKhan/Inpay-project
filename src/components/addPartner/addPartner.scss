@@ -158,7 +158,8 @@
 
     &__partner-name,
     &__partner-phone-number,
-    &__partner-login {
+    &__partner-login,
+    &__partner-percent {
       font-size: 14px;
       font-weight: bold;
       color: var(--main-text-color);
@@ -168,6 +169,10 @@
         border-color: #E2E2EA;
         padding: 10px 12px;
         width: 100%;
+      }
+      &__error-message {
+        font-size: 10px;
+        color: red;
       }
     }
   }

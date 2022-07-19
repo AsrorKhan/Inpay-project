@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Drawer, Form, message} from "antd";
 import {Icon} from "../icon/icon";
-import {CheckOutlined, PlusOutlined} from '@ant-design/icons';
+import {CheckOutlined, EditOutlined, PlusOutlined} from '@ant-design/icons';
 import iconPlus from '../../assets/icons/icon-plus.svg'
 import './addPartner.scss';
 import {TextField} from "@mui/material";
@@ -15,13 +15,16 @@ import {animationSettings} from "../../assets/animationSettings";
 export const AddPartner = () => {
     const [visible, setVisible] = useState(false);
     const [partnerName, setPartnerName] = useState('');
-    const [partnerPhoneNumber, setPartnerPhoneNumber] = useState('');
-    const [percent, setPercent] = useState('')
-    const [percentError, setPercentError] = useState(false);
-    const [successAnimate, setSuccessAnimate] = useState(false)
-    const [errorAnimate, setErrorAnimate] = useState(false)
-    const [userLogo, setUserLogo] = useState({})
-    const filePicker = useRef(null)
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [percent, setPercent] = useState('');
+    const [userLogo, setUserLogo] = useState(null);
+    const [selectedLogo, setSelectedLogo] = useState(false)
+    const filePicker = useRef(null);
+    const phoneNumberRef = useRef('')
+    const [successAnimate, setSuccessAnimate] = useState(false);
+    const [errorAnimate, setErrorAnimate] = useState(false);
+    const [validPhoneNumber, setValidPhoneNumber] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('');
 
     const onClose = () => {
         setVisible(false);
@@ -36,31 +39,54 @@ export const AddPartner = () => {
     const handleChangeUpload = (event) => {
         try {
             let value = event.target.files[0];
-            setUserLogo(value)
+            setUserLogo(value);
+            setSelectedLogo(true)
         } catch (e) {
             console.log("catch: ", e);
         }
     }
 
-
-    const setPartnerPercent = (event) => {
-        const withoutLetterRegExp = new RegExp(/[^\d,]/g);
-        if (withoutLetterRegExp.test(event)) {
-            setPercent(event)
+    const setPartnerPhoneNumber = (value) => {
+        if (!value.length && value.length < 19) {
+            setValidPhoneNumber(false);
+            setErrorMessage('Введите корректный номер телефона')
+        } else {
+            const formattedPartnerPhoneNumber = changeFormatPhoneNumber(value)
+            setPhoneNumber(formattedPartnerPhoneNumber)
+            setValidPhoneNumber(true)
+            setErrorMessage('')
         }
-
     }
 
+    const handleKeyDown = event => {
+        if (event.key === " ") {
+            event.preventDefault();
+        }
+    };
+    const handleKeyPress = event => {
+        let withoutString = new RegExp(/[^\d\.]/g)
+        let key = String.fromCharCode(!event.charCode ? event.which : event.charCode)
+        if (withoutString.test(key)) {
+            event.preventDefault();
+            setErrorMessage('Пример: 12, 17.5, 20.0')
+        } else {
+            setErrorMessage('');
+        }
+    }
+    const setPartnerPercent = (event) => {
+        let value = event.target.value;
+        if (value.length > 0) {
+            setPercent(value);
+        }
+    }
     const handleUploadLogo = async () => {
         try {
             if (!userLogo) {
-                message.error('Пожалуйста устоновите логотип')
                 return;
             }
             let formData = new FormData();
             formData.append('file', userLogo);
-            const response = await userService.uploadUserLogo(formData)
-            console.log(response.data);
+            await userService.uploadUserLogo(formData)
         } catch (e) {
             message.error('Пожалуйста выберите логотип');
         }
@@ -68,34 +94,38 @@ export const AddPartner = () => {
 
 
     const createNewPartner = async () => {
-        const formattedPartnerPhoneNumber = changeFormatPhoneNumber(partnerPhoneNumber)
+        console.log(phoneNumber);
+        console.log(phoneNumber.length);
         await handleUploadLogo();
         try {
-            const newPartnerData = {
-                login: formattedPartnerPhoneNumber,
-                firstName: partnerName,
-                percent: percent
-            }
-            const response = await userService.registerNewPartner(newPartnerData);
-            if (response?.data?.success) {
-
-                message.success('Партнер создано успешно!!!');
-                setSuccessAnimate(true)
-                setTimeout(() => {
-                    setSuccessAnimate(false)
-                }, 1500)
-
+            if (!selectedLogo || partnerName === '' || percent === '' || phoneNumber.length < 12) {
+                message.error('Заполняйте правильно всех полей!')
             } else {
-                message.error("При создание нового партнера произошло ошибка")
-                setErrorAnimate(true)
-                setTimeout(() => {
-                    setErrorAnimate(false)
-                }, 2200)
+                const newPartnerData = {
+                    login: phoneNumber,
+                    firstName: partnerName,
+                    percent: percent
+                }
+                const response = await userService.registerNewPartner(newPartnerData);
+                if (response?.data?.success) {
+                    message.success('Партнер создано успешно!!!');
+                    setSuccessAnimate(true)
+                    setTimeout(() => {
+                        setSuccessAnimate(false)
+                    }, 1500)
+                    filePicker.current.value = null
+                    setSelectedLogo(false)
+                    setPartnerPhoneNumber('');
+                    setPartnerName('')
+                    setPercent('')
+                } else {
+                    message.error("При создание нового партнера произошло ошибка")
+                    setErrorAnimate(true)
+                    setTimeout(() => {
+                        setErrorAnimate(false)
+                    }, 2000)
+                }
             }
-            setPercent('');
-            setPartnerPhoneNumber('');
-            setPartnerName('')
-            setUserLogo({})
         } catch (e) {
             console.log("catch: ", e);
         }
@@ -113,12 +143,8 @@ export const AddPartner = () => {
                     visible={visible}>
                 <h3 className='add-partner__title'>Добавить нового партнера</h3>
                 <form className="add-partner__form">
-                    {
-                        successAnimate ? <LottieAnimation animationData={animationSettings.successAnimation}/> : ''
-                    }
-                    {
-                        errorAnimate ? <LottieAnimation animationData={animationSettings.errorAnimation}/> : ''
-                    }
+                    {successAnimate ? <LottieAnimation animationData={animationSettings.successAnimation}/> : ''}
+                    {errorAnimate ? <LottieAnimation animationData={animationSettings.errorAnimation}/> : ''}
                     <div>
                         <Form.Item className='add-partner__form__upload-photo'>
                             <div className='add-partner__form__upload-photo__selector-wrapper'>
@@ -127,7 +153,7 @@ export const AddPartner = () => {
                                     onClick={handlePick}
                                     type={"button"}
                                 >
-                                    <PlusOutlined/>
+                                    {selectedLogo ? <EditOutlined/> : <PlusOutlined/>}
                                 </button>
                                 <input
                                     type="file"
@@ -135,32 +161,45 @@ export const AddPartner = () => {
                                     accept='image/*, .png, .jpg, .gif, .web, .svg'
                                     onChange={handleChangeUpload}
                                     ref={filePicker}
+                                    required={true}
                                 />
                             </div>
 
-                            <div className="add-partner-form__upload-photo-text">
-                            <span
-                                className='add-partner-form__upload-photo-text__title'>Добавьте логотип партнера</span>
-                                <span className='add-partner-form__upload-photo-text__desc'> Макс.размер файла 5 MB - JPG, PNG</span>
-                            </div>
+                            {
+                                selectedLogo ?
+                                    <span>Файл выбран</span>
+                                    :
+                                    <div className="add-partner-form__upload-photo-text">
+                                        <span
+                                            className='add-partner-form__upload-photo-text__title'>
+                                            Добавьте логотип партнера
+                                        </span>
+                                        <span className='add-partner-form__upload-photo-text__desc'>Макс.размер файла 5 MB - JPG, PNG</span>
+                                    </div>
+
+                            }
                         </Form.Item>
                         <Form.Item className='add-partner__form__partner-name'>
                             <TextField
                                 label='Наименование торговой точки '
+                                value={partnerName}
                                 focused
                                 type='text'
                                 style={{width: '100%', textAlign: 'center'}}
                                 onChange={(e) => setPartnerName(e.target.value)}
                                 margin={"normal"}
                                 color={'info'}
+                                required={true}
                             />
                         </Form.Item>
                         <Form.Item className='add-partner__form__partner-phone-number'>
                             <InputMask
                                 mask={'(+998) ## ### ## ##'}
-                                defaultValue={partnerPhoneNumber}
+                                value={phoneNumber}
                                 onChange={(e) => setPartnerPhoneNumber(e.target.value)}
                                 alwaysShowMask={true}
+                                ref={phoneNumberRef}
+                                required={true}
                                 formatChars={{
                                     '#': '[0-9]'
                                 }}
@@ -176,14 +215,22 @@ export const AddPartner = () => {
                                     />
                                 }
                             </InputMask>
+                            {validPhoneNumber ? <span
+                                className='add-partner__form__partner-phone-number__error-message'>{errorMessage}</span> : ''}
+
                         </Form.Item>
-                        <Form.Item className='add-partner__form__partner-login'>
+                        <Form.Item className='add-partner__form__partner-percent'>
                             <TextField
+                                required={true}
+                                onKeyDown={handleKeyDown}
+                                onKeyPress={handleKeyPress}
                                 label='% Вставка по продукту'
                                 focused
                                 style={{width: '100%', textAlign: 'center'}}
-                                onChange={(e) => setPartnerPercent(e.target.value)}
+                                onChange={(event) => setPartnerPercent(event)}
+                                value={percent}
                             />
+                            <span className='add-partner__form__partner-percent__error-message'>{errorMessage}</span>
                         </Form.Item>
                     </div>
 
