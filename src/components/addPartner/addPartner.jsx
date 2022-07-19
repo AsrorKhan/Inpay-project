@@ -94,8 +94,6 @@ export const AddPartner = () => {
 
 
     const createNewPartner = async () => {
-        console.log(phoneNumber);
-        console.log(phoneNumber.length);
         await handleUploadLogo();
         try {
             if (!selectedLogo || partnerName === '' || percent === '' || phoneNumber.length < 12) {
@@ -132,8 +130,6 @@ export const AddPartner = () => {
     }
     return (
         <div className='add-partner'>
-
-
             <Button className='add-partner__add-button' type={"primary"} size={"large"} onClick={showDrawer}>
                 <Icon content={iconPlus}/>
                 Добавить партнера

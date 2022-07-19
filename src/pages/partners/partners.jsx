@@ -14,6 +14,7 @@ import {setPartners} from "../../store/reducer/partners";
 export const Partners = () => {
     const [viewCountTable, setViewCountTable] = useState(10);
     const [changeInformation, setChangeInformation] = useState(false);
+    const [rowMoreInformation, setRowMoreInformation] = useState({})
     const partnersList = useSelector(state => state.partners);
     const dispatch = useDispatch();
 
@@ -53,15 +54,17 @@ export const Partners = () => {
                     <ChangePartner
                         visible={changeInformation}
                         onClose={onCloseChangePartners}
+                        moreInformation={rowMoreInformation}
                     />
                     <Table
                         columns={partnersTableColumns}
                         dataSource={partnersList.content}
-                        rowKey='login'
+                        rowKey={(r) => r.id}
                         onRow={(record, rowIndex) => {
                             return {
                                 onClick: event => {
                                     setChangeInformation(true)
+                                    setRowMoreInformation(record)
                                 }
                             }
                         }}
@@ -86,11 +89,13 @@ export const Partners = () => {
                                     </Select></div>
                                 <div className='ant-table__amounts'>
                                     <span className='ant-table__amounts-title'>Итого цена поставщика</span>
-                                    <span className='ant-table__amounts-amount'>10 000 000 000 000 000 000 000 UZS</span>
+                                    <span
+                                        className='ant-table__amounts-amount'>10 000 000 000 000 000 000 000 UZS</span>
                                 </div>
                                 <div className='ant-table__amounts'>
                                     <span className='ant-table__amounts-title'>Итого в рассрочку</span>
-                                    <span className='ant-table__amounts-amount'>23 000 000 000 000 000 000 000 UZS</span>
+                                    <span
+                                        className='ant-table__amounts-amount'>23 000 000 000 000 000 000 000 UZS</span>
                                 </div>
                             </>
                         )}

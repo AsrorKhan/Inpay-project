@@ -4,21 +4,21 @@ import {Icon} from "../icon/icon";
 import {iconsList} from "../../helpers/iconsList";
 import './recoverPasswordModal.scss'
 import {CheckOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
-import {CONFIRM_PHONE_NUMBER, RECOVER_PASSWORD_MAIN_ROUTE} from "../../constants/routeContants";
+import partnersService from "../../services/partnersService";
 
-export const RecoverPasswordModal = () => {
+export const RecoverPasswordModal = ({userLogin}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const navigate = useNavigate();
-
     const showModal = (e) => {
         setIsModalVisible(true);
         e.stopPropagation()
     };
 
+
     const recoverPasswordFunctional = async (event) => {
-        event.stopPropagation()
-        message.success('Request has been sent')
+        event.stopPropagation();
+        const response = await partnersService.requestPasswordRecover(userLogin)
+        console.log("response.data", response.data);
+        // message.success('Запрос отправлен успешно')
     }
     const handleOk = (e) => {
         setIsModalVisible(false);
@@ -47,10 +47,12 @@ export const RecoverPasswordModal = () => {
                     запрос на восстановление пароля
                 </div>
                 <div className="recover-password__recover-modal__btns">
-                    <Button type={"primary"} danger className='recover-password__recover-modal__btns__cancel' onClick={event => handleCancel()}>
+                    <Button type={"primary"} danger className='recover-password__recover-modal__btns__cancel'
+                            onClick={event => handleCancel()}>
                         Отмена
                     </Button>
-                    <Button type={"primary"} className='recover-password__recover-modal__btns__send' onClick={recoverPasswordFunctional}>
+                    <Button type={"primary"} className='recover-password__recover-modal__btns__send'
+                            onClick={recoverPasswordFunctional}>
                         <CheckOutlined/> &nbsp;
                         Отправить
                     </Button>
@@ -58,7 +60,7 @@ export const RecoverPasswordModal = () => {
             </Modal>
 
 
-            <Button type="primary" ghost className='recover-password__button' onClick={showModal} >
+            <Button type="primary" ghost className='recover-password__button' onClick={showModal}>
                 <Icon content={iconsList.iconLock} alt={'icon-lock'}/>
                 Сменить пароль
             </Button>

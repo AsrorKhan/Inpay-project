@@ -24,7 +24,6 @@ export const Analysis = () => {
                 dispatch(setAnalysis({
                     content: response.data
                 }))
-                console.log("analysisList", analysisList.content);
             })
             .catch((e) => console.log("catch: ", e));
     }, [])

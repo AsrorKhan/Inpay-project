@@ -3,7 +3,7 @@ import './switcherActivator.scss'
 import {Button, Dropdown, Menu, Space} from "antd";
 import {CheckCircleOutlined, CloseCircleOutlined,} from '@ant-design/icons';
 
-export const SwitcherActivator = ({status}) => {
+export const SwitcherActivator = ({activated}) => {
     const menu = (
         <Menu
             theme={"dark"}
@@ -32,8 +32,8 @@ export const SwitcherActivator = ({status}) => {
 
             <Dropdown overlay={menu}>
                 <a onClick={(e) => e.preventDefault()}>
-                    <span className={status ? 'active-status' : 'inactive-status'}>
-                        {status ? 'Активный' : 'Отклонен'}
+                    <span className={activated ? 'active-status' : 'inactive-status'}>
+                        {activated ? 'Активный' : 'Отклонен'}
                     </span>
                 </a>
             </Dropdown>
