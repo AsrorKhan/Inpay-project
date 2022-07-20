@@ -55,7 +55,7 @@ export const Home = () => {
                     <Table
                         columns={analysisPageDataColumn}
                         dataSource={analysisList.content}
-                        rowKey={(r) => r.key}
+                        rowKey={(r) => r.id}
                         onRow={(record, rowIndex) => {
                             return {
                                 onClick: event => {
