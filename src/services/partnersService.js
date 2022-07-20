@@ -6,13 +6,19 @@ class PartnersService {
     }
 
     requestPasswordRecover(userLogin) {
-        return $instance.post('/api/account/reset-password/by/admin', {
-            login: userLogin
+        return $instance.get('/api/account/reset-password/by/admin', {
+            params: {
+                login: userLogin
+            }
         })
     }
 
     changePartnerData(modifiedData) {
         return $instance.post('/api/edit-user', modifiedData )
+    }
+
+    activatorSwitcherPartner(userData) {
+        return $instance.post('/api/change/user/status', userData)
     }
 }
 

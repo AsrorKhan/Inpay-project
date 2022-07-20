@@ -1,9 +1,36 @@
 import React from 'react';
 import './switcherActivator.scss'
-import {Button, Dropdown, Menu, Space} from "antd";
+import {Dropdown, Menu} from "antd";
 import {CheckCircleOutlined, CloseCircleOutlined,} from '@ant-design/icons';
+import partnersService from "../../services/partnersService";
+import {useDispatch} from "react-redux";
+import {setPartners} from "../../store/reducer/partners";
 
-export const SwitcherActivator = ({activated}) => {
+export const SwitcherActivator = ({userData}) => {
+    const dispatch = useDispatch();
+
+    const deactivatePartner = async (e) => {
+        e.stopPropagation()
+        const requestData = {
+            userId: userData?.id,
+            statusId: 1
+        }
+        const response = await partnersService.activatorSwitcherPartner(requestData)
+        const partnersList = await partnersService.loadPartnersList();
+        dispatch(setPartners({content: partnersList?.data}))
+        console.log(response.data);
+    }
+    const activatePartner = async (e) => {
+        e.stopPropagation()
+        const requestData = {
+            userId: userData?.id,
+            statusId: 0
+        }
+        const response = await partnersService.activatorSwitcherPartner(requestData)
+        const partnersList = await partnersService.loadPartnersList();
+        dispatch(setPartners({content: partnersList?.data}))
+        console.log(response.data);
+    }
     const menu = (
         <Menu
             theme={"dark"}
@@ -11,16 +38,16 @@ export const SwitcherActivator = ({activated}) => {
                 {
                     key: '1',
                     label: (
-                        <span>
-                            <CheckCircleOutlined />&nbsp;Активировать
+                        <span onClick={(e) => activatePartner(e)}>
+                            <CheckCircleOutlined/>&nbsp;Активировать
                         </span>
                     )
                 },
                 {
                     key: '2',
                     label: (
-                        <span>
-                            <CloseCircleOutlined />&nbsp;Деактивировать партнера
+                        <span onClick={(e) => deactivatePartner(e)}>
+                            <CloseCircleOutlined/>&nbsp;Деактивировать партнера
                         </span>
                     ),
                 },
@@ -32,8 +59,11 @@ export const SwitcherActivator = ({activated}) => {
 
             <Dropdown overlay={menu}>
                 <a onClick={(e) => e.preventDefault()}>
-                    <span className={activated ? 'active-status' : 'inactive-status'}>
-                        {activated ? 'Активный' : 'Отклонен'}
+                    <span
+                        className={userData?.activated ? 'active-status' : 'inactive-status'}
+                        onClick={e => e.stopPropagation()}
+                    >
+                        {userData?.activated ? 'Активный' : 'Отклонен'}
                     </span>
                 </a>
             </Dropdown>

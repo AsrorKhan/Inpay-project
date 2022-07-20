@@ -18,11 +18,11 @@ export const partnersTableColumns = [
     {
         title: 'Статус',
         dataIndex: 'activated',
-        render: (text, record) => <><SwitcherActivator activated={text}/></>
+        render: (_, record) => <><SwitcherActivator userData={record}/></>
     },
     {
         title: 'Забыли пароль',
         dataIndex: '',
-        render: (_, record) => <RecoverPasswordModal userLogin={record?.login}/>
+        render: (_, record) => <RecoverPasswordModal userData={record}/>
     },
 ]

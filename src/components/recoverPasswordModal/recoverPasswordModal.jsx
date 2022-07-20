@@ -6,7 +6,7 @@ import './recoverPasswordModal.scss'
 import {CheckOutlined} from "@ant-design/icons";
 import partnersService from "../../services/partnersService";
 
-export const RecoverPasswordModal = ({userLogin}) => {
+export const RecoverPasswordModal = ({userData}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = (e) => {
         setIsModalVisible(true);
@@ -16,9 +16,13 @@ export const RecoverPasswordModal = ({userLogin}) => {
 
     const recoverPasswordFunctional = async (event) => {
         event.stopPropagation();
-        const response = await partnersService.requestPasswordRecover(userLogin)
-        console.log("response.data", response.data);
-        // message.success('Запрос отправлен успешно')
+        const response = await partnersService.requestPasswordRecover(userData?.login)
+        if (response.data.success) {
+            message.success('Запрос отправлен успешно');
+            setIsModalVisible(false)
+        } else {
+            message.error('При отправке запроса произошло ошибка!');
+        }
     }
     const handleOk = (e) => {
         setIsModalVisible(false);
@@ -26,8 +30,8 @@ export const RecoverPasswordModal = ({userLogin}) => {
     };
 
     const handleCancel = (e) => {
-        setIsModalVisible(false);
         e.stopPropagation()
+        setIsModalVisible(false);
     };
     return (
         <div className='recover-password'>
@@ -48,7 +52,7 @@ export const RecoverPasswordModal = ({userLogin}) => {
                 </div>
                 <div className="recover-password__recover-modal__btns">
                     <Button type={"primary"} danger className='recover-password__recover-modal__btns__cancel'
-                            onClick={event => handleCancel()}>
+                            onClick={handleCancel}>
                         Отмена
                     </Button>
                     <Button type={"primary"} className='recover-password__recover-modal__btns__send'

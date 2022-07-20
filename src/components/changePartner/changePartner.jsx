@@ -30,8 +30,7 @@ export const ChangePartner = ({visible, onClose, moreInformation}) => {
             setModifiedPartnerName('');
             setModifiedPartnerPercent('')
             message.success('Партнер изменен успешно')
-            console.log(response.data);
-        }else {
+        } else {
             message.error('При изменении данные партнера произошло ошибка')
         }
 
@@ -48,11 +47,9 @@ export const ChangePartner = ({visible, onClose, moreInformation}) => {
         let withoutString = new RegExp(/[^\d\.]/g)
         let key = String.fromCharCode(!event.charCode ? event.which : event.charCode)
         if (withoutString.test(key)) {
-            console.log(key);
             event.preventDefault();
             setErrorMessage('Пример: 12, 17.5, 20.0')
         } else {
-            console.log(key);
             setErrorMessage('');
         }
     }
